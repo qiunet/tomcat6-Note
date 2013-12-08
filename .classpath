@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/.svn/**|org/apache/tomcat/util/net/puretls/|org/apache/naming/factory/webservices/" kind="src" path="java"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="webapps/examples/WEB-INF/classes"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.7.3.v20120119-1537.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core.manipulation_1.4.0.v20110928-1453.jar"/>
+	<classpathentry kind="output" path=".settings/output"/>
+</classpath>
