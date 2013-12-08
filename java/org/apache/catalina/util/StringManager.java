@@ -31,9 +31,13 @@ import java.net.URLClassLoader;
  * common cases of message formating which otherwise require the
  * creation of Object arrays and such.
  *
+ *一个国际化 /本地化的帮助类. 
+ *
  * <p>The StringManager operates on a package basis. One StringManager
  * per package can be created and accessed via the getManager method
  * call.
+ *
+ *stringmanager 操作基于包名.  每一个报名创建一个stringmanager. 然后使用getManger() 方法调用.
  *
  * <p>The StringManager will look for a ResourceBundle named by
  * the package name given plus the suffix of "LocalStrings". In
@@ -41,8 +45,13 @@ import java.net.URLClassLoader;
  * in a LocalStrings.properties file located in the package
  * directory of the classpath.
  *
+ *stringmanager 通过包名得到ResourceBundle 运算得到一个以LocalStrings开头的文件,
+ *实际. 意味着 本地化信息放置于包名文件夹下的LocalStrings.properties.
+ *
+ *
  * <p>Please see the documentation for java.util.ResourceBundle for
  * more information.
+ * 更多信息 请参考: java.util.ResourceBundle
  *
  * @author James Duncan Davidson [duncan@eng.sun.com]
  * @author James Todd [gonzo@eng.sun.com]
@@ -64,6 +73,9 @@ public class StringManager {
      * private method and all access to it is arbitrated by the
      * static getManager method call so that only one StringManager
      * per package will be created.
+     * 
+     * 根据给定的package new一个stringmanager. 这个是一个私有的方法.所以的访问都来源于 getManager 方法
+     * 所以. 每一个package 仅 对应一个stringmanager
      *
      * @param packageName Name of package to create StringManager for.
      */
@@ -78,6 +90,7 @@ public class StringManager {
             ClassLoader cl=Thread.currentThread().getContextClassLoader();
             if( cl != null ) {
                 try {
+                	// 根据本地locale .得到对应的一个ResourceBundle.   主要就做这个事情.
                     bundle=ResourceBundle.getBundle(bundleName, Locale.getDefault(), cl);
                     return;
                 } catch(MissingResourceException ex2) {
@@ -98,7 +111,7 @@ public class StringManager {
 
     /**
      * Get a string from the underlying resource bundle.
-     *
+     * 从(绑定资源 意思就是ResourceBundle)得到一个string
      * @param key The resource name
      */
     public String getString(String key) {
@@ -129,6 +142,9 @@ public class StringManager {
     /**
      * Get a string from the underlying resource bundle and format
      * it with the given set of arguments.
+     * 
+     * 从(绑定资源 意思就是ResourceBundle)得到一个string, 并且使用给定的参数 格式化
+     * 可以理解为替换一些占位符
      *
      * @param key The resource name
      * @param args Formatting directives
@@ -169,6 +185,8 @@ public class StringManager {
      * with the given object argument. This argument can of course be
      * a String object.
      *
+     *从(绑定资源 意思就是ResourceBundle)得到一个string, 并且使用给定的参数 格式化. 该参数当然可以是string
+     *
      * @param key The resource name
      * @param arg Formatting directive
      */
@@ -182,6 +200,8 @@ public class StringManager {
      * Get a string from the underlying resource bundle and format it
      * with the given object arguments. These arguments can of course
      * be String objects.
+     *
+     *从(绑定资源 意思就是ResourceBundle)得到一个string, 并且使用给定的参数 格式化. 该参数当然可以是string
      *
      * @param key The resource name
      * @param arg1 Formatting directive
@@ -197,6 +217,7 @@ public class StringManager {
      * Get a string from the underlying resource bundle and format it
      * with the given object arguments. These arguments can of course
      * be String objects.
+     * 从(绑定资源 意思就是ResourceBundle)得到一个string, 并且使用给定的参数 格式化. 该参数当然可以是string
      *
      * @param key The resource name
      * @param arg1 Formatting directive
@@ -215,6 +236,8 @@ public class StringManager {
      * with the given object arguments. These arguments can of course
      * be String objects.
      *
+     *从(绑定资源 意思就是ResourceBundle)得到一个string, 并且使用给定的参数 格式化. 该参数当然可以是string
+     *
      * @param key The resource name
      * @param arg1 Formatting directive
      * @param arg2 Formatting directive
@@ -230,13 +253,16 @@ public class StringManager {
     // --------------------------------------------------------------
     // STATIC SUPPORT METHODS
     // --------------------------------------------------------------
-
+    // 保存 stringmanager的hashtable.  key是package  value是stringmanager
     private static Hashtable managers = new Hashtable();
 
     /**
      * Get the StringManager for a particular package. If a manager for
      * a package already exists, it will be reused, else a new
      * StringManager will be created and returned.
+     * 
+     * 根据给定的包名.  返回一个stringmanager.  如果存在. 直接返回.  否则 .创建新的并且返回.
+     * 注: 该处相当于单例.不过应该是根据包名的一种特殊的单例模式
      *
      * @param packageName The package name
      */

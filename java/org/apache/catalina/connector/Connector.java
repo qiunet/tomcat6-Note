@@ -157,6 +157,7 @@ public class Connector
 
     /**
      * The port number on which we listen for requests.
+     * 我们监听请求的端口
      */
     protected int port = 0;
 
@@ -166,6 +167,8 @@ public class Connector
      * were directed.  This is useful when operating Tomcat behind a proxy
      * server, so that redirects get constructed accurately.  If not specified,
      * the server name included in the <code>Host</code> header is used.
+     * 
+     * 看不懂这么多英文. 但是是代理主机名的意思
      */
     protected String proxyName = null;
 
@@ -175,6 +178,8 @@ public class Connector
      * were directed.  This is useful when operating Tomcat behind a proxy
      * server, so that redirects get constructed accurately.  If not specified,
      * the port number specified by the <code>port</code> property is used.
+     * 
+     * 代理端口
      */
     protected int proxyPort = 0;
 
@@ -188,6 +193,8 @@ public class Connector
     /**
      * The request scheme that will be set on all requests received
      * through this connector.
+     * 
+     * 设置到所有该connector接口的请求的 请求策划
      */
     protected String scheme = "http";
 
@@ -195,12 +202,15 @@ public class Connector
     /**
      * The secure connection flag that will be set on all requests received
      * through this connector.
+     * 
+     * 使用安全链接标志
      */
     protected boolean secure = false;
 
 
     /**
      * The string manager for this package.
+     * 这个包对应的stringmananger .一个可以国际化提示处理类. 一般使用在打印输出.
      */
     protected StringManager sm =
         StringManager.getManager(Constants.Package);
