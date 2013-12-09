@@ -47,6 +47,12 @@ import org.apache.tomcat.util.modeler.Registry;
 /**
  * Implementation of a Coyote connector for Tomcat 5.x.
  * 相当于tomcat5 的Coyote connector
+ * 
+ * BIO Http Connector 最早的一种
+ * NIO Http Connector 非阻塞IO与长连接Comet支持
+ * AJP Connector 基于AJP协议，AJP是专门设计用来为tomcat与http服务器之间通信专门定制的协议，能提供较高的通信速度和效率。如与Apache服务器集成时，采用这个协议。
+ * APR HTTP Connector 用C实现，通过JNI调用的。主要提升对静态资源（如HTML、图片、CSS、JS等）的访问性能。现在这个库已独立出来可用在任何项目中。Tomcat在配置APR之后性能非常强劲。
+ * 
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @version $Revision: 586738 $ $Date: 2007-10-20 22:57:18 +0800 (Sat, 20 Oct 2007) $
@@ -219,6 +225,7 @@ public class Connector
     /**
      * Maximum size of a POST which will be automatically parsed by the
      * container. 2MB by default.
+     * post最大解析长度.  默认: 2M
      */
     protected int maxPostSize = 2 * 1024 * 1024;
 
@@ -232,18 +239,21 @@ public class Connector
 
     /**
      * Has this component been initialized yet?
+     * 是否被初始化
      */
     protected boolean initialized = false;
 
 
     /**
      * Has this component been started yet?
+     * 被启动??
      */
     protected boolean started = false;
 
 
     /**
      * The shutdown signal to our background thread
+     * 后台线程停止信号
      */
     protected boolean stopped = false;
 
@@ -254,6 +264,7 @@ public class Connector
 
     /**
      * The background thread.
+     * 后台线程
      */
     protected Thread thread = null;
 
@@ -261,6 +272,9 @@ public class Connector
     /**
      * Coyote Protocol handler class name.
      * Defaults to the Coyote HTTP/1.1 protocolHandler.
+     * 
+     * Coyote 协议处理类名
+     * 默认: org.apache.coyote.http11.Http11Protocol
      */
     protected String protocolHandlerClassName =
         "org.apache.coyote.http11.Http11Protocol";
@@ -268,18 +282,21 @@ public class Connector
 
     /**
      * Coyote protocol handler.
+     * Coyote 协议处理类引用
      */
     protected ProtocolHandler protocolHandler = null;
 
 
     /**
      * Coyote adapter.
+     * Coyote 适配
      */
     protected Adapter adapter = null;
 
 
      /**
       * Mapper.
+      * 映射.  >> 待续. 应该是 servlet名 映射的类路径
       */
      protected Mapper mapper = new Mapper();
 
@@ -372,6 +389,7 @@ public class Connector
 
     /**
      * Return the <code>Service</code> with which we are associated (if any).
+     * 返回关联的service
      */
     public Service getService() {
 
@@ -383,6 +401,7 @@ public class Connector
     /**
      * Set the <code>Service</code> with which we are associated (if any).
      *
+     * 设置我们管理的service
      * @param service The service that owns this Engine
      */
     public void setService(Service service) {
@@ -395,6 +414,7 @@ public class Connector
 
     /**
      * True if the TRACE method is allowed.  Default value is "false".
+     * 返回是否允许跟踪
      */
     public boolean getAllowTrace() {
 
@@ -405,7 +425,7 @@ public class Connector
 
     /**
      * Set the allowTrace flag, to disable or enable the TRACE HTTP method.
-     *
+     *设置是否允许跟踪的标志
      * @param allowTrace The new allowTrace flag
      */
     public void setAllowTrace(boolean allowTrace) {
@@ -447,6 +467,7 @@ public class Connector
     /**
      * Return the Container used for processing requests received by this
      * Connector.
+     * 返回处理该connector接受到的请求的Container
      */
     public Container getContainer() {
         if( container==null ) {
@@ -461,6 +482,8 @@ public class Connector
     /**
      * Set the Container used for processing requests received by this
      * Connector.
+     * 
+     * 为connector 设置container
      *
      * @param container The new Container to use
      */
@@ -529,6 +552,7 @@ public class Connector
 
      /**
       * Return the mapper.
+      * 返回映射类
       */
      public Mapper getMapper() {
 
@@ -611,6 +635,7 @@ public class Connector
 
     /**
      * Return the Coyote protocol handler in use.
+     * 返回协议名.
      */
     public String getProtocol() {
 
@@ -630,13 +655,13 @@ public class Connector
     }
     
     // ---------------------------------------------- APR Version Constants
-
+   // APR HTTP Connector 用C实现，通过JNI调用的。主要提升对静态资源（如HTML、图片、CSS、JS等）的访问性能。现在这个库已独立出来可用在任何项目中。Tomcat在配置APR之后性能非常强劲。
     private static final int TCN_REQUIRED_MAJOR = 1;
     private static final int TCN_REQUIRED_MINOR = 1;
     private static final int TCN_REQUIRED_PATCH = 3;
     private static boolean aprInitialized = false;
 
-    // APR init support
+    // APR init support  初始化apr
     private static synchronized void initializeAPR()
     {
         if (aprInitialized) {
@@ -680,7 +705,7 @@ public class Connector
 
     /**
      * Set the Coyote protocol which will be used by the connector.
-     *
+     * 设置connector的协议
      * @param protocol The Coyote protocol name
      */
     public void setProtocol(String protocol) {

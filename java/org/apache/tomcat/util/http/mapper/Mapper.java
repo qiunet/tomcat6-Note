@@ -29,6 +29,8 @@ import java.util.ArrayList;
 /**
  * Mapper, which implements the servlet API mapping rules (which are derived
  * from the HTTP rules).
+ * 
+ * 实现了servletAPI的映射规则 
  *
  * @author Remy Maucherat
  */
@@ -42,17 +44,20 @@ public final class Mapper {
 
     /**
      * Array containing the virtual hosts definitions.
+     * 包含主机定义的数组
      */
     protected Host[] hosts = new Host[0];
 
 
     /**
      * Default host name.
+     * 默认主机名
      */
     protected String defaultHostName = null;
 
     /**
      * Context associated with this wrapper, used for wrapper mapping.
+     * context关联wrapper.(两者都是tomcat容器. wrapper为最底层的容器) .是wrapper映射
      */
     protected Context context = new Context();
 
@@ -63,6 +68,7 @@ public final class Mapper {
     /**
      * Get default host.
      *
+     *返回默认的host
      * @return Default host name
      */
     public String getDefaultHostName() {
