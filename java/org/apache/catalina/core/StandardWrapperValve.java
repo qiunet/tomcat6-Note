@@ -43,7 +43,7 @@ import org.apache.tomcat.util.log.SystemLogHandler;
 /**
  * Valve that implements the default basic behavior for the
  * <code>StandardWrapper</code> container implementation.
- *
+ * 阀(valve) 实现了默认的 
  * @author Craig R. McClanahan
  * @version $Revision: 596489 $ $Date: 2007-11-20 07:38:40 +0800 (Tue, 20 Nov 2007) $
  */
@@ -78,6 +78,7 @@ final class StandardWrapperValve
      * Invoke the servlet we are managing, respecting the rules regarding
      * servlet lifecycle and SingleThreadModel support.
      *
+     * 反射调用我们管理的servlet  
      * @param request Request to be processed
      * @param response Response to be produced
      * @param valveContext Valve context used to forward to the next Valve

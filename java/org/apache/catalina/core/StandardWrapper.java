@@ -165,12 +165,16 @@ public class StandardWrapper
 
     /**
      * The (single) initialized instance of this servlet.
+     * 
+     * 该servlet的单例实例
      */
     protected Servlet instance = null;
 
 
     /**
      * The support object for our instance listeners.
+     * 
+     * 实例监听类
      */
     protected InstanceSupport instanceSupport = new InstanceSupport(this);
 
@@ -190,6 +194,8 @@ public class StandardWrapper
 
     /**
      * Mappings associated with the wrapper.
+     * 
+     * 关联该servlet的映射表
      */
     protected ArrayList mappings = new ArrayList();
 
@@ -197,6 +203,8 @@ public class StandardWrapper
     /**
      * The initialization parameters for this servlet, keyed by
      * parameter name.
+     * 
+     * 该servlet初始化参数表, key是参数名
      */
     protected HashMap parameters = new HashMap();
 
@@ -221,48 +229,61 @@ public class StandardWrapper
 
     /**
      * The fully qualified servlet class name for this servlet.
+     * 
      */
     protected String servletClass = null;
 
 
     /**
      * Does this servlet implement the SingleThreadModel interface?
+     * 
+     * 是否实现了 SingleThreadModel 接口
      */
     protected boolean singleThreadModel = false;
 
 
     /**
      * Are we unloading our servlet instance at the moment?
+     * 
+     * 是否正在卸载
      */
     protected boolean unloading = false;
 
 
     /**
      * Maximum number of STM instances.
+     * stm 最大的实例
      */
     protected int maxInstances = 20;
 
 
     /**
      * Number of instances currently loaded for a STM servlet.
+     * 当前加载的stm servlet实例数
      */
     protected int nInstances = 0;
 
 
     /**
      * Stack containing the STM instances.
+     * 
+     * stm 实例池
      */
     protected Stack instancePool = null;
 
     
     /**
      * Wait time for servlet unload in ms.
+     * 
+     * servlet 卸载时长(毫秒)
      */
     protected long unloadDelay = 2000;
     
 
     /**
      * True if this StandardWrapper is for the JspServlet
+     * 
+     * 是否是一个jspservlet
      */
     protected boolean isJspServlet;
 
@@ -293,6 +314,8 @@ public class StandardWrapper
     /**
      * Static class array used when the SecurityManager is turned on and 
      * <code>Servlet.service</code>  is invoked.
+     * 
+     * 静态class数组. 当SecurityManager 可用. 并且Servlet.service被调用.
      */                                                 
     protected static Class[] classTypeUsedInService = new Class[]{
                                                          ServletRequest.class,
@@ -575,6 +598,8 @@ public class StandardWrapper
      * <code>Container.setName()</code> method, and complements the
      * <code>getServletName()</code> method required by the
      * <code>ServletConfig</code> interface.
+     * 
+     * 设置一个名称.这个是一个别名. 
      *
      * @param name The new name of this servlet
      */
@@ -792,6 +817,9 @@ public class StandardWrapper
      * that this instance is not allocated again until it is deallocated by a
      * call to <code>deallocate()</code>.
      *
+     *分配一个可以调用service()方法的初始对象.如果该servlet没有实现SingleThreadModel.
+     *这个对象马上被返回. 否则必须确保没有调用deallocate前.不能被再次分配
+     * 
      * @exception ServletException if the servlet init() method threw
      *  an exception
      * @exception ServletException if a loading error occurs

@@ -528,6 +528,8 @@ public abstract class ContainerBase
      * Container.  Within the set of child containers belonging to a particular
      * parent, Container names must be unique.
      *
+     * 设置一个别名.(适应人的习惯) . 描述该容器. 在一个独立的父类里面.  name必须是唯一的.
+     *
      * @param name New name of this container
      *
      * @exception IllegalStateException if this Container has already been
@@ -602,6 +604,8 @@ public abstract class ContainerBase
      * Return the parent class loader (if any) for this web application.
      * This call is meaningful only <strong>after</strong> a Loader has
      * been configured.
+     * 
+     * 在加载器配置后.  返回父类的加载器
      */
     public ClassLoader getParentClassLoader() {
         if (parentClassLoader != null)
@@ -620,7 +624,8 @@ public abstract class ContainerBase
      * been configured, and the specified value (if non-null) should be
      * passed as an argument to the class loader constructor.
      *
-     *
+     * 设置父类加载器, 这个调用以为这.loader被配置了.  一个指定的值将以参数的形式传入
+     * 
      * @param parent The new parent class loader
      */
     public void setParentClassLoader(ClassLoader parent) {
@@ -635,6 +640,8 @@ public abstract class ContainerBase
     /**
      * Return the Pipeline object that manages the Valves associated with
      * this Container.
+     * 
+     * 返回管道对象.
      */
     public Pipeline getPipeline() {
 

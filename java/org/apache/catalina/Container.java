@@ -262,6 +262,8 @@ public interface Container {
      * a thread to be spawn. After waiting the specified amount of time, 
      * the thread will invoke the executePeriodic method on this container 
      * and all its children.
+     * 
+     * 
      */
     public int getBackgroundProcessorDelay();
 
@@ -301,6 +303,8 @@ public interface Container {
     /**
      * Return the Container for which this Container is a child, if there is
      * one.  If there is no defined parent, return <code>null</code>.
+     * 
+     * 
      */
     public Container getParent();
 
@@ -321,6 +325,8 @@ public interface Container {
 
     /**
      * Return the parent class loader (if any) for web applications.
+     * 
+     * 返回父类加载器
      */
     public ClassLoader getParentClassLoader();
 
@@ -330,6 +336,8 @@ public interface Container {
      * This call is meaningful only <strong>before</strong> a Loader has
      * been configured, and the specified value (if non-null) should be
      * passed as an argument to the class loader constructor.
+     *
+     * 设置父类加载器. 
      *
      * @param parent The new parent class loader
      */
@@ -387,6 +395,7 @@ public interface Container {
      * <code>IllegalArgumentException</code> if this Container chooses not
      * to be attached to the specified Container, in which case it is not added
      *
+     * 添加一个子容器到该容器.  如果支持.  之前.先调用子容器的setParent()方法.将该容器设置.  然后添加到 children 集合!
      * @param child New child Container to be added
      *
      * @exception IllegalArgumentException if this exception is thrown by
@@ -401,7 +410,8 @@ public interface Container {
 
     /**
      * Add a container event listener to this component.
-     *
+     * 
+     * 添加一个容器事件
      * @param listener The listener to add
      */
     public void addContainerListener(ContainerListener listener);
@@ -409,6 +419,8 @@ public interface Container {
 
     /**
      * Add a property change listener to this component.
+     *
+     *	添加一个属性变化的监听器
      *
      * @param listener The listener to add
      */
@@ -419,6 +431,7 @@ public interface Container {
      * Return the child Container, associated with this Container, with
      * the specified name (if any); otherwise, return <code>null</code>
      *
+     *	返回指定名称的子容器.  没有返回null
      * @param name Name of the child Container to be retrieved
      */
     public Container findChild(String name);
@@ -427,6 +440,7 @@ public interface Container {
     /**
      * Return the set of children Containers associated with this Container.
      * If this Container has no children, a zero-length array is returned.
+     * 返回子容器集合.  没有.返回空数组
      */
     public Container[] findChildren();
 
@@ -435,6 +449,8 @@ public interface Container {
      * Return the set of container listeners associated with this Container.
      * If this Container has no registered container listeners, a zero-length
      * array is returned.
+     * 
+     * 返回关联该容器的容器监听集合. 如果没有. 返回空数组
      */
     public ContainerListener[] findContainerListeners();
 
@@ -443,6 +459,7 @@ public interface Container {
      * Process the specified Request, and generate the corresponding Response,
      * according to the design of this particular Container.
      *
+     * 处理吃定的请求.做出相应的响应处理.
      * @param request Request to be processed
      * @param response Response to be produced
      *
@@ -458,6 +475,7 @@ public interface Container {
     /**
      * Remove an existing child Container from association with this parent
      * Container.
+     * 从关联的父类容器删除一个存在的指定子容器
      *
      * @param child Existing child Container to be removed
      */
@@ -466,6 +484,7 @@ public interface Container {
 
     /**
      * Remove a container event listener from this component.
+     * 从该组件删除一个容器事件
      *
      * @param listener The listener to remove
      */
@@ -474,6 +493,8 @@ public interface Container {
 
     /**
      * Remove a property change listener from this component.
+     * 
+     * 从该组件删除一个属性变化监听
      *
      * @param listener The listener to remove
      */
