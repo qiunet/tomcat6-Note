@@ -21,12 +21,18 @@ package org.apache.catalina;
 /**
  * An <b>Engine</b> is a Container that represents the entire Catalina servlet
  * engine.  It is useful in the following types of scenarios:
+ * 
+ * 一个Engine(引擎) 是一个充当所有servlet引擎的 Container. (注: 一个service 仅有一个engine). 它常用于下列情况:
  * <ul>
  * <li>You wish to use Interceptors that see every single request processed
  *     by the entire engine.
  * <li>You wish to run Catalina in with a standalone HTTP connector, but still
  *     want support for multiple virtual hosts.
  * </ul>
+ * 
+ *  . 你想使用拦截器查看每个单独请求处理.
+ *  . 你想在一个独立的http connector 运行Catalina. 还希望能支持多个虚拟主机.
+ * 
  * In general, you would not use an Engine when deploying Catalina connected
  * to a web server (such as Apache), because the Connector will have
  * utilized the web server's facilities to determine which Context (or

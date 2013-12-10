@@ -69,6 +69,8 @@ import org.apache.tomcat.util.modeler.Registry;
  * Standard implementation of the <b>Wrapper</b> interface that represents
  * an individual servlet definition.  No child Containers are allowed, and
  * the parent Container must be a Context.
+ * 
+ * Standard 实现了Wrapper接口.  它扮演一个特殊的servlet定义. 它不被允许子容器 .而父类必须是context
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -89,14 +91,17 @@ public class StandardWrapper
 
     /**
      * Create a new StandardWrapper component with the default basic Valve.
+     * 
+     * 以一个默认的基本valve创建 StandardWrapper 组件
      */
     public StandardWrapper() {
 
         super();
-        swValve=new StandardWrapperValve();
-        pipeline.setBasic(swValve);
+        swValve=new StandardWrapperValve();				//基本的valve
+        pipeline.setBasic(swValve);						//设置到管道.
         broadcaster = new NotificationBroadcasterSupport();
 
+        // 加载org/apache/catalina/core/RestrictedServlets.properties 
         if (restrictedServlets == null) {
             restrictedServlets = new Properties();
             try {
@@ -124,6 +129,7 @@ public class StandardWrapper
      * milliseconds since the epoch), or zero if the servlet is available.
      * If this value equals Long.MAX_VALUE, the unavailability of this
      * servlet is considered permanent.
+     * 
      */
     protected long available = 0L;
     
@@ -141,6 +147,8 @@ public class StandardWrapper
 
     /**
      * The facade associated with this wrapper.
+     * 
+     * 关联的外观类
      */
     protected StandardWrapperFacade facade =
         new StandardWrapperFacade(this);
@@ -148,6 +156,8 @@ public class StandardWrapper
 
     /**
      * The descriptive information string for this implementation.
+     * 
+     * 该类的描述信息
      */
     protected static final String info =
         "org.apache.catalina.core.StandardWrapper/1.0";

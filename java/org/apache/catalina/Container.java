@@ -35,6 +35,10 @@ import org.apache.juli.logging.Log;
  * optionally support a pipeline of Valves that process the request in an
  * order configured at runtime, by implementing the <b>Pipeline</b> interface
  * as well.
+ * 
+ * 一个container 是一个可以执行来自客户端的请求的对象. 它将返回一个基于该请求的响应. 
+ *  可以随意的搭配一条实现了Pipeline(管道)接口的 有序配置的Valves(阀) 处理该request
+ *  
  * <p>
  * Containers will exist at several conceptual levels within Catalina.  The
  * following examples represent common cases:
@@ -62,6 +66,10 @@ import org.apache.juli.logging.Log;
  * that provide functionality which might be shared (by attaching it to a
  * parent Container) or individually customized.  The following support
  * components are currently recognized:
+ * 
+ * 一个container 也可能关联一些支持的组件. 它们提供功能性的支持??? (后面不明白) .下列组件当前被认证:
+ * Loader 
+ * 
  * <ul>
  * <li><b>Loader</b> - Class loader to use for integrating new Java classes
  *     for this Container into the JVM in which Catalina is running.
@@ -89,6 +97,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a child container is added
+     * 
+     * 添加一个 子组件 事件
      * by <code>addChild()</code>.
      */
     public static final String ADD_CHILD_EVENT = "addChild";
@@ -96,6 +106,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a Mapper is added
+     * 
+     * 添加一个映射事件
      * by <code>addMapper()</code>.
      */
     public static final String ADD_MAPPER_EVENT = "addMapper";
@@ -103,6 +115,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a valve is added
+     * 
+     * 添加一个阀的事件
      * by <code>addValve()</code>, if this Container supports pipelines.
      */
     public static final String ADD_VALVE_EVENT = "addValve";
@@ -110,6 +124,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a child container is removed
+     * 
+     * 移除一个子组件事件
      * by <code>removeChild()</code>.
      */
     public static final String REMOVE_CHILD_EVENT = "removeChild";
@@ -117,6 +133,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a Mapper is removed
+     * 
+     * 移除一个映射Mapper 事件
      * by <code>removeMapper()</code>.
      */
     public static final String REMOVE_MAPPER_EVENT = "removeMapper";
@@ -124,6 +142,8 @@ public interface Container {
 
     /**
      * The ContainerEvent event type sent when a valve is removed
+     * 
+     * 移除一个阀事件
      * by <code>removeValve()</code>, if this Container supports pipelines.
      */
     public static final String REMOVE_VALVE_EVENT = "removeValve";
@@ -135,6 +155,8 @@ public interface Container {
     /**
      * Return descriptive information about this Container implementation and
      * the corresponding version number, in the format
+     * 
+     * 返回一个描述信息
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
      */
     public String getInfo();
@@ -144,12 +166,16 @@ public interface Container {
      * Return the Loader with which this Container is associated.  If there is
      * no associated Loader, return the Loader associated with our parent
      * Container (if any); otherwise, return <code>null</code>.
+     * 
+     * 返回container关联的loader, 如果没有.返回父类Container的 .
+     * 再没有.就返回null 
      */
     public Loader getLoader();
 
 
     /**
      * Set the Loader with which this Container is associated.
+     * 设置关联loader, 
      *
      * @param loader The newly associated loader
      */
@@ -160,6 +186,8 @@ public interface Container {
      * Return the Logger with which this Container is associated.  If there is
      * no associated Logger, return the Logger associated with our parent
      * Container (if any); otherwise return <code>null</code>.
+     * 
+     * 得到关联的Logger , 没有返回父类的,  再没有.返回null
      */
     public Log getLogger();
 
@@ -168,12 +196,16 @@ public interface Container {
      * Return the Manager with which this Container is associated.  If there is
      * no associated Manager, return the Manager associated with our parent
      * Container (if any); otherwise return <code>null</code>.
+     * 
+     * 得到关联的manager , 没有的话. 返回父类的.  再没有.返回null
      */
     public Manager getManager();
 
 
     /**
      * Set the Manager with which this Container is associated.
+     *
+     * 设置关联manager
      *
      * @param manager The newly associated Manager
      */
@@ -182,18 +214,23 @@ public interface Container {
 
     /**
      * Return an object which may be utilized for mapping to this component.
+     * 
      */
     public Object getMappingObject();
 
     
     /**
      * Return the JMX name associated with this container.
+     * 
+     * 返回该container与 jmx关联的名称
      */
     public String getObjectName();    
 
     /**
      * Return the Pipeline object that manages the Valves associated with
      * this Container.
+     * 
+     * 返回与该Container关联的Pipeline对象
      */
     public Pipeline getPipeline();
 
@@ -202,6 +239,8 @@ public interface Container {
      * Return the Cluster with which this Container is associated.  If there is
      * no associated Cluster, return the Cluster associated with our parent
      * Container (if any); otherwise return <code>null</code>.
+     * 
+     * 返回关联的Cluster ,  没有返回父类的. 再没有.返回null
      */
     public Cluster getCluster();
 
@@ -209,6 +248,7 @@ public interface Container {
     /**
      * Set the Cluster with which this Container is associated.
      *
+     * 设置关联Cluster
      * @param cluster the Cluster with which this Container is associated.
      */
     public void setCluster(Cluster cluster);

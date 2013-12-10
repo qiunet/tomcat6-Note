@@ -49,6 +49,8 @@ import org.apache.tomcat.util.log.SystemLogHandler;
  * managing the filter instances instantiated when a web application
  * is first started.
  *
+ * 实现了javax.servlet.FilterConfig. 通常该filter实例在应用首次启动时初始化所有过滤器;
+ *
  * @author Craig R. McClanahan
  * @version $Revision: 505593 $ $Date: 2007-02-10 08:54:56 +0800 (Sat, 10 Feb 2007) $
  */
@@ -65,6 +67,8 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
     /**
      * Construct a new ApplicationFilterConfig for the specified filter
      * definition.
+     * 
+     * 根据一个指定filter构造一个ApplicationFilterConfig
      *
      * @param context The context with which we are associated
      * @param filterDef Filter definition for which a FilterConfig is to be
@@ -87,7 +91,10 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
                ServletException, InvocationTargetException, NamingException {
 
         super();
-
+        
+        
+        // 读取RestrictedFilters.properties文件.生成properties
+        
         if (restrictedFilters == null) {
             restrictedFilters = new Properties();
             try {
@@ -115,24 +122,32 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * The Context with which we are associated.
+     * 
+     * 关联的Context)
      */
     private Context context = null;
 
 
     /**
      * The application Filter we are configured for.
+     * 
+     * 我们配置的应用过滤器
      */
     private transient Filter filter = null;
 
 
     /**
      * The <code>FilterDef</code> that defines our associated Filter.
+     * 
+     * 关联我们Filter的FilterDef
      */
     private FilterDef filterDef = null;
 
 
     /**
      * Restricted filters (which can only be loaded by a privileged webapp).
+     * 
+     *  受限制的过滤器.  仅能被私有webapp加载 (不明白)
      */
     protected static Properties restrictedFilters = null;
 
@@ -141,7 +156,9 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
 
     /**
-     * Return the name of the filter we are configuring.
+     * Return the name of the filter we are configuring. 
+     * 
+     * 返回过滤器名称
      */
     public String getFilterName() {
 
@@ -154,7 +171,9 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
      * Return a <code>String</code> containing the value of the named
      * initialization parameter, or <code>null</code> if the parameter
      * does not exist.
-     *
+     * 
+     * 返回对应name的字符串. 如果不存在. 返回null
+     * 
      * @param name Name of the requested initialization parameter
      */
     public String getInitParameter(String name) {
@@ -170,6 +189,8 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * Return an <code>Enumeration</code> of the names of the initialization
+     * 
+     * 返回ParameterMap的keys
      * parameters for this Filter.
      */
     public Enumeration getInitParameterNames() {
@@ -185,6 +206,8 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * Return the ServletContext of our associated web application.
+     * 
+     * 返回关联的ServletContext
      */
     public ServletContext getServletContext() {
 
@@ -195,6 +218,7 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * Return a String representation of this object.
+     * 
      */
     public String toString() {
 
@@ -282,6 +306,8 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * Return the filter definition we are configured for.
+     * 
+     * 返回定义的filter
      */
     FilterDef getFilterDef() {
 
@@ -292,6 +318,7 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
 
     /**
      * Return <code>true</code> if loading this filter is allowed.
+     * 返回filterClass是否允许被加载
      */
     protected boolean isFilterAllowed(Class filterClass) {
 
@@ -316,6 +343,8 @@ final class ApplicationFilterConfig implements FilterConfig, Serializable {
     /**
      * Release the Filter instance associated with this FilterConfig,
      * if there is one.
+     * 
+     * 释放关联该实例的Filter实例
      */
     void release() {
 

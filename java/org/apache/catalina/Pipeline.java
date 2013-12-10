@@ -25,7 +25,10 @@ package org.apache.catalina;
  * required that a Valve somewhere in the pipeline (usually the last one)
  * must process the request and create the corresponding response, rather
  * than trying to pass the request on.</p>
- *
+ * 接口描述了个一个有序的Valves(阀)集合当invoke() 被invoked反射调用的时候. 他需要一个在pipeline(通常最后一个)
+ * 的Valve处理请求,并且创建对应的响应.  (最后一句不懂)
+ * 
+ * 
  * <p>There is generally a single Pipeline instance associated with each
  * Container.  The container's normal request processing functionality is
  * generally encapsulated in a container-specific Valve, which should always
@@ -33,7 +36,11 @@ package org.apache.catalina;
  * <code>setBasic()</code> method is provided to set the Valve instance that
  * will always be executed last.  Other Valves will be executed in the order
  * that they were added, before the basic Valve is executed.</p>
- *
+ * 
+ * 
+ * 
+ * 
+ * 
  * @author Craig R. McClanahan
  * @author Peter Donald
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
