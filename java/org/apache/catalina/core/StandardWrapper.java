@@ -188,6 +188,8 @@ public class StandardWrapper
     /**
      * The load-on-startup order value (negative value means load on
      * first call) for this servlet.
+     * 
+     * load-on-startup 值. 在web.xml指定
      */
     protected int loadOnStartup = -1;
 
@@ -237,7 +239,7 @@ public class StandardWrapper
     /**
      * Does this servlet implement the SingleThreadModel interface?
      * 
-     * 是否实现了 SingleThreadModel 接口
+     * 是否实现了 SingleThreadModel 接口.如果一个没有实现SingleThreadModel的serviet. 是返回同一个实例.  反之.则维护一个池
      */
     protected boolean singleThreadModel = false;
 
@@ -267,7 +269,7 @@ public class StandardWrapper
     /**
      * Stack containing the STM instances.
      * 
-     * stm 实例池
+     * stm 实例池(当是 stm servlet的话. 维护的是该池)
      */
     protected Stack instancePool = null;
 
@@ -1037,6 +1039,10 @@ public class StandardWrapper
      * at least one initialized instance.  This can be used, for example, to
      * load servlets that are marked in the deployment descriptor to be loaded
      * at server startup time.
+     * 
+     * 加载. 并且初始化一个servlet, 如果不是stm模式,  并且有实例. 直接返回.  
+     * 
+     * 
      */
     public synchronized Servlet loadServlet() throws ServletException {
 
@@ -1057,6 +1063,9 @@ public class StandardWrapper
             // case Catalina-specific code in Jasper - it also requires that the
             // servlet path be replaced by the <jsp-file> element content in
             // order to be completely effective
+            
+            
+            //如果servlet是一个jsp,  得到真是地址. 
             String actualClass = servletClass;
             if ((actualClass == null) && (jspFile != null)) {
                 Wrapper jspWrapper = (Wrapper)
@@ -1076,6 +1085,7 @@ public class StandardWrapper
             }
 
             // Complain if no servlet class has been specified
+            //没有servlet被指定, 抛出异常
             if (actualClass == null) {
                 unavailable(null);
                 throw new ServletException
@@ -1083,6 +1093,7 @@ public class StandardWrapper
             }
 
             // Acquire an instance of the class loader to be used
+            //获得一个loader实例
             Loader loader = getLoader();
             if (loader == null) {
                 unavailable(null);
@@ -1103,6 +1114,7 @@ public class StandardWrapper
             }
 
             // Load the specified servlet class from the appropriate class loader
+            // 使用恰当的classloader,  加载指定的servletname
             Class classClass = null;
             try {
                 if (SecurityUtil.isPackageProtectionEnabled()){

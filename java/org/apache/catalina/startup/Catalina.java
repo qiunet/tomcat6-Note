@@ -282,7 +282,7 @@ public class Catalina extends Embedded {
     /**
      * Create and configure the Digester we will be using for startup.
      * 
-     * 新建一个我们用来startup的配置Digester
+     * 新建一个我们用来startup的配置Digester(通过解析xml .配置类的依赖关系)
      * 
      * 这个digester是对应一个conf/server.xml文件.  
      * 

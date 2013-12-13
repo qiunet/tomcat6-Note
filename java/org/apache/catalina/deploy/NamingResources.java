@@ -31,7 +31,8 @@ import org.apache.catalina.ServerFactory;
 /**
  * Holds and manages the naming resources defined in the J2EE Enterprise 
  * Naming Context and their associated JNDI context.
- *
+ * 
+ * 保存 管理 
  * @author Remy Maucherat
  * @version $Revision: 652623 $ $Date: 2008-05-02 02:58:16 +0800 (Fri, 02 May 2008) $
  */

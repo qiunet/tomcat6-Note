@@ -55,6 +55,8 @@ import org.apache.tomcat.util.modeler.Registry;
  * Standard implementation of the <b>Server</b> interface, available for use
  * (but not required) when deploying and starting Catalina.
  *
+ *  实现了server接口,  有效)(非必须)在Catalina 启动并且使用.
+ *
  * @author Craig R. McClanahan
  * @version $Revision: 762911 $ $Date: 2009-04-08 03:15:16 +0800 (Wed, 08 Apr 2009) $
  */
@@ -69,6 +71,8 @@ public final class StandardServer
 
     /**
      * ServerLifecycleListener classname.
+     * 
+     * server 生命周期监听类名
      */
     private static String SERVER_LISTENER_CLASS_NAME =
         "org.apache.catalina.mbeans.ServerLifecycleListener";
@@ -79,6 +83,8 @@ public final class StandardServer
 
     /**
      * Construct a default instance of this class.
+     * 
+     * 构造一个默认的实例
      */
     public StandardServer() {
 
@@ -109,12 +115,20 @@ public final class StandardServer
 
     /**
      * Global naming resources.
+     * 
+     * conf/tomcat-users.xml.  
      */
     private NamingResources globalNamingResources = null;
 
 
     /**
      * Descriptive information about this Server implementation.
+     * 
+     ***************
+     *Editable user database that can also be used by
+     * UserDatabaseRealm to authenticate users
+     *************** 
+     * 编辑用户资料库, 也可以使用UserDatabaseRealm. 来鉴权用户 
      */
     private static final String info =
         "org.apache.catalina.core.StandardServer/1.0";
@@ -122,6 +136,8 @@ public final class StandardServer
 
     /**
      * The lifecycle event support for this component.
+     * 
+     * 生命周期事件支持类.
      */
     private LifecycleSupport lifecycle = new LifecycleSupport(this);
 
@@ -134,6 +150,7 @@ public final class StandardServer
 
     /**
      * The port number on which we wait for shutdown commands.
+     * 接受 shutdown命令的端口
      */
     private int port = 8005;
 
@@ -141,18 +158,22 @@ public final class StandardServer
     /**
      * A random number generator that is <strong>only</strong> used if
      * the shutdown command string is longer than 1024 characters.
+     * 
+     * 一个随机数产生器.  当shutdown命令长达1024char后使用.
      */
     private Random random = null;
 
 
     /**
      * The set of Services associated with this Server.
+     * 关联的server集合
      */
     private Service services[] = new Service[0];
 
 
     /**
      * The shutdown command string we are looking for.
+     * 使用的shutdown命令字符串
      */
     private String shutdown = "SHUTDOWN";
 
@@ -166,18 +187,24 @@ public final class StandardServer
 
     /**
      * Has this component been started?
+     * 
+     * 组件是否启动
      */
     private boolean started = false;
 
 
     /**
      * Has this component been initialized?
+     * 
+     * 组件是否初始化
      */
     private boolean initialized = false;
 
 
     /**
      * The property change support for this component.
+     * 
+     * 属性更改的监听支持
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -188,6 +215,8 @@ public final class StandardServer
 
     /**
      * Return the global naming resources context.
+     * 
+     * 
      */
     public javax.naming.Context getGlobalNamingContext() {
 
@@ -242,6 +271,9 @@ public final class StandardServer
      * Return descriptive information about this Server implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
+     * 
+     * 
+     * 
      */
     public String getInfo() {
 
@@ -251,6 +283,9 @@ public final class StandardServer
 
     /**
      * Report the current Tomcat Server Release number
+     * 
+     * 报告当前tomcat发布版本数
+     * 
      * @return Tomcat release identifier
      */
     public String getServerInfo() {
@@ -260,6 +295,8 @@ public final class StandardServer
 
     /**
      * Return the port number we listen to for shutdown commands.
+     * 
+     * 返回监听shutdown命令的端口
      */
     public int getPort() {
 
@@ -270,6 +307,8 @@ public final class StandardServer
 
     /**
      * Set the port number we listen to for shutdown commands.
+     * 
+     * 设置监听shutdown命令的端口
      *
      * @param port The new port number
      */
@@ -282,6 +321,8 @@ public final class StandardServer
 
     /**
      * Return the shutdown command string we are waiting for.
+     * 
+     * 返回shutdown命令字符串
      */
     public String getShutdown() {
 
@@ -293,6 +334,8 @@ public final class StandardServer
     /**
      * Set the shutdown command we are waiting for.
      *
+     * 设置shutdown命令字符串
+     * 
      * @param shutdown The new shutdown command
      */
     public void setShutdown(String shutdown) {
@@ -307,13 +350,14 @@ public final class StandardServer
 
     /**
      * Add a new Service to the set of defined Services.
-     *
+     * 添加一个service到当前定义的数组
      * @param service The Service to be added
      */
     public void addService(Service service) {
-
+    	// 为service 设置父类service
         service.setServer(this);
 
+        //添加service
         synchronized (services) {
             Service results[] = new Service[services.length + 1];
             System.arraycopy(services, 0, results, 0, services.length);
@@ -322,6 +366,7 @@ public final class StandardServer
 
             if (initialized) {
                 try {
+                	//初始化
                     service.initialize();
                 } catch (LifecycleException e) {
                     log.error(e);
@@ -330,6 +375,7 @@ public final class StandardServer
 
             if (started && (service instanceof Lifecycle)) {
                 try {
+                	//启动
                     ((Lifecycle) service).start();
                 } catch (LifecycleException e) {
                     ;
@@ -337,6 +383,7 @@ public final class StandardServer
             }
 
             // Report this property change to interested listeners
+            // 事件
             support.firePropertyChange("service", null, service);
         }
 
@@ -350,6 +397,10 @@ public final class StandardServer
      * Wait until a proper shutdown command is received, then return.
      * This keeps the main thread alive - the thread pool listening for http 
      * connections is daemon threads.
+     * 
+     * 等待.知道一个有效的shutdown命令被接受.  然后返回.  
+     * 这个thread保持主线程活跃的; 是一个守护线程
+     * 
      */
     public void await() {
         // Negative values - don't wait on port - tomcat is embedded or we just don't like ports
@@ -380,6 +431,7 @@ public final class StandardServer
         }
 
         // Loop waiting for a connection and a valid command
+        //循环等待一个有效的命令
         while (true) {
 
             // Wait for the next connection
@@ -421,6 +473,7 @@ public final class StandardServer
             }
 
             // Close the socket now that we are done with it
+            //关闭socket
             try {
                 socket.close();
             } catch (IOException e) {
@@ -428,9 +481,10 @@ public final class StandardServer
             }
 
             // Match against our command string
+            // 与我们的命令相比  匹配
             boolean match = command.toString().equals(shutdown);
             if (match) {
-                break;
+                break;  //跳出while
             } else
                 log.warn("StandardServer.await: Invalid command '" +
                                    command.toString() + "' received");
@@ -438,6 +492,7 @@ public final class StandardServer
         }
 
         // Close the server socket and return
+        //关闭serverSocket
         try {
             serverSocket.close();
         } catch (IOException e) {
@@ -451,6 +506,7 @@ public final class StandardServer
      * Return the specified Service (if it exists); otherwise return
      * <code>null</code>.
      *
+     *返回一个指定名称的service,  如果没有.  返回null
      * @param name Name of the Service to be returned
      */
     public Service findService(String name) {
@@ -472,6 +528,7 @@ public final class StandardServer
 
     /**
      * Return the set of Services defined within this Server.
+     * 返回所有的service
      */
     public Service[] findServices() {
 
@@ -494,7 +551,8 @@ public final class StandardServer
     /**
      * Remove the specified Service from the set associated from this
      * Server.
-     *
+     * 
+     * 删除指定的service.
      * @param service The Service to be removed
      */
     public void removeService(Service service) {
@@ -537,6 +595,8 @@ public final class StandardServer
     /**
      * Add a property change listener to this component.
      *
+     * 添加一个属性变化事件
+     * 
      * @param listener The listener to add
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -549,6 +609,7 @@ public final class StandardServer
     /**
      * Remove a property change listener from this component.
      *
+     * 删除一个属性变化事件
      * @param listener The listener to remove
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -560,6 +621,8 @@ public final class StandardServer
 
     /**
      * Return a String representation of this component.
+     * 
+     * 
      */
     public String toString() {
 
@@ -660,6 +723,8 @@ public final class StandardServer
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
+     * 
+     * 得到所有的生命周期监听 . 如果没哟u.返回一个空数组
      */
     public LifecycleListener[] findLifecycleListeners() {
 
@@ -670,7 +735,7 @@ public final class StandardServer
 
     /**
      * Remove a LifecycleEvent listener from this component.
-     *
+     *删除指定的监听
      * @param listener The listener to remove
      */
     public void removeLifecycleListener(LifecycleListener listener) {
@@ -685,6 +750,8 @@ public final class StandardServer
      * component.  This method should be called before any of the public
      * methods of this component are utilized.  It should also send a
      * LifecycleEvent of type START_EVENT to any registered listeners.
+     * 
+     *	为使用该组件的方法做准备. 这个方法会在其他方法之前执行. 也将注册一个事件
      *
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents this component from being used
@@ -692,7 +759,7 @@ public final class StandardServer
     public void start() throws LifecycleException {
 
         // Validate and update our current component state
-        if (started) {
+        if (started) { //校验是否启动
             log.debug(sm.getString("standardServer.start.started"));
             return;
         }
@@ -704,6 +771,7 @@ public final class StandardServer
         started = true;
 
         // Start our defined Services
+        //启动所有的service
         synchronized (services) {
             for (int i = 0; i < services.length; i++) {
                 if (services[i] instanceof Lifecycle)
@@ -759,6 +827,8 @@ public final class StandardServer
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
+     * 
+     * 初始化, 
      */
     public void initialize()
         throws LifecycleException 

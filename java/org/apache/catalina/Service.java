@@ -29,7 +29,12 @@ import org.apache.catalina.connector.Connector;
  * A given JVM can contain any number of Service instances; however, they are
  * completely independent of each other and share only the basic JVM facilities
  * and classes on the system class path.
- *
+ * 
+ * 一个service是一个 或者 多个Connectors 和一个Container 处理他们接收到的请求. 
+ * 
+ * 一个指定的jvm可以包含任意数量的service实例.  他们完整但不依赖其他实例.
+ *   仅仅共享一个基本的jvm设备和classpath路径的classes.
+ * 
  * @author Craig R. McClanahan
  * @version $Revision: 520968 $ $Date: 2007-03-22 02:00:39 +0800 (Thu, 22 Mar 2007) $
  */
@@ -42,12 +47,15 @@ public interface Service {
     /**
      * Return the <code>Container</code> that handles requests for all
      * <code>Connectors</code> associated with this Service.
+     * 
+     * 返回处理请求的的Container.
      */
     public Container getContainer();
 
     /**
      * Set the <code>Container</code> that handles requests for all
      * <code>Connectors</code> associated with this Service.
+     *
      *
      * @param container The new Container
      */
@@ -67,6 +75,7 @@ public interface Service {
 
     /**
      * Set the name of this Service.
+     * 设置该service的name.  
      *
      * @param name The new service name
      */
@@ -90,6 +99,8 @@ public interface Service {
     /**
      * Add a new Connector to the set of defined Connectors, and associate it
      * with this Service's Container.
+     * 
+     * 添加一个Connector到Connectors集合 并且与service 的Container关联
      *
      * @param connector The Connector to be added
      */
@@ -105,6 +116,7 @@ public interface Service {
      * Service.  The removed Connector will also be disassociated from our
      * Container.
      *
+     * 从集合中删除一个Connector 及去除关联. 
      * @param connector The Connector to be removed
      */
     public void removeConnector(Connector connector);
