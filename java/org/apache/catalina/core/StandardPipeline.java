@@ -43,6 +43,9 @@ import org.apache.tomcat.util.modeler.Registry;
  * a series of Valves that have been configured to be called in order.  This
  * implementation can be used for any type of Container.
  *
+ *
+ * 标准的实现了一个管道(Pipeline)的处理.  他们将 有序调用配置的一系列valve.  该类可以在任何容器使用
+ *
  * <b>IMPLEMENTATION WARNING</b> - This implementation assumes that no
  * calls to <code>addValve()</code> or <code>removeValve</code> are allowed
  * while a request is currently being processed.  Otherwise, the mechanism
@@ -73,6 +76,8 @@ public class StandardPipeline
     /**
      * Construct a new StandardPipeline instance that is associated with the
      * specified Container.
+     * 
+     * 使用一个指定的Container构造StandardPipeline
      *
      * @param container The container we should be associated with
      */
@@ -89,30 +94,36 @@ public class StandardPipeline
 
     /**
      * The basic Valve (if any) associated with this Pipeline.
+     * 
+     * 关联的基本valve.  最后执行的. 
      */
     protected Valve basic = null;
 
 
     /**
      * The Container with which this Pipeline is associated.
+     * 关联的Container
      */
     protected Container container = null;
 
 
     /**
      * Descriptive information about this implementation.
+     * 描述
      */
     protected String info = "org.apache.catalina.core.StandardPipeline/1.0";
 
 
     /**
      * The lifecycle event support for this component.
+     * 生命周期监听
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
 
     /**
      * The string manager for this package.
+     * 
      */
     protected static StringManager sm =
         StringManager.getManager(Constants.Package);
@@ -120,12 +131,14 @@ public class StandardPipeline
 
     /**
      * Has this component been started yet?
+     * 被启动?
      */
     protected boolean started = false;
 
 
     /**
      * The first valve associated with this Pipeline.
+     * 第一个vavle.没有的话. 
      */
     protected Valve first = null;
 
@@ -148,6 +161,8 @@ public class StandardPipeline
 
     /**
      * Return the Container with which this Pipeline is associated.
+     * 
+     * 得到Container
      */
     public Container getContainer() {
 
@@ -158,6 +173,7 @@ public class StandardPipeline
 
     /**
      * Set the Container with which this Pipeline is associated.
+     * 设置Container
      *
      * @param container The new associated container
      */
@@ -173,6 +189,7 @@ public class StandardPipeline
 
     /**
      * Add a lifecycle event listener to this component.
+     * 注册一个监听
      *
      * @param listener The listener to add
      */
@@ -186,6 +203,8 @@ public class StandardPipeline
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this 
      * Lifecycle has no listeners registered, a zero-length array is returned.
+     * 
+     * 得到所有的监听. 没有空数组
      */
     public LifecycleListener[] findLifecycleListeners() {
 
@@ -196,7 +215,7 @@ public class StandardPipeline
 
     /**
      * Remove a lifecycle event listener from this component.
-     *
+     * 去除一个监听
      * @param listener The listener to remove
      */
     public void removeLifecycleListener(LifecycleListener listener) {
@@ -207,23 +226,27 @@ public class StandardPipeline
 
     /**
      * Prepare for active use of the public methods of this Component.
-     *
+     * 为该组件可用做准备.  就是start
+     * 
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents it from being started
      */
     public synchronized void start() throws LifecycleException {
 
         // Validate and update our current component state
+    	// 校验是否已经启动
         if (started)
             throw new LifecycleException
                 (sm.getString("standardPipeline.alreadyStarted"));
 
         // Notify our interested LifecycleListeners
+        //通知LifecycleListeners
         lifecycle.fireLifecycleEvent(BEFORE_START_EVENT, null);
 
         started = true;
 
         // Start the Valves in our pipeline (including the basic), if any
+        //启动vavle. 包括basic
         Valve current = first;
         if (current == null) {
         	current = basic;
@@ -247,6 +270,7 @@ public class StandardPipeline
     /**
      * Gracefully shut down active use of the public methods of this Component.
      *
+     * shutdown
      * @exception LifecycleException if this component detects a fatal error
      *  that needs to be reported
      */
@@ -269,6 +293,7 @@ public class StandardPipeline
         if (current == null) {
         	current = basic;
         }
+        // 各组件stop
         while (current != null) {
             if (current instanceof Lifecycle)
                 ((Lifecycle) current).stop();
@@ -279,7 +304,11 @@ public class StandardPipeline
         // Notify our interested LifecycleListeners
         lifecycle.fireLifecycleEvent(AFTER_STOP_EVENT, null);
     }
-
+    /**
+     * 不明白这个地方什么意思
+     * 好像跟jmx相关
+     * @param valve
+     */
     private void registerValve(Valve valve) {
 
         if( valve instanceof ValveBase &&
@@ -551,7 +580,9 @@ public class StandardPipeline
     
     }
 
-
+    /**
+     * 得到第一个vavle, 没有默认basic
+     */
     public Valve getFirst() {
         if (first != null) {
             return first;

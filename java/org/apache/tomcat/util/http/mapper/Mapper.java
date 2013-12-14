@@ -87,7 +87,7 @@ public final class Mapper {
 
     /**
      * Add a new host to the mapper.
-     *
+     * 添加个host到 hosts数组
      * @param name Virtual host name
      * @param host Host object
      */
@@ -117,7 +117,8 @@ public final class Mapper {
 
     /**
      * Remove a host from the mapper.
-     *
+     * 
+     * 从hosts 删除一个主机 
      * @param name Virtual host name
      */
     public synchronized void removeHost(String name) {
@@ -168,6 +169,8 @@ public final class Mapper {
 
     /**
      * Remove a host alias
+     * 
+     * 
      * @param alias The alias to remove
      */
     public synchronized void removeHostAlias(String alias) {
@@ -291,7 +294,7 @@ public final class Mapper {
 
     /**
      * Return all contexts, in //HOST/PATH form
-     *
+     *从//HOST/PATH 返回所有的context
      * @return The context names
      */
     public String[] getContextNames() {
@@ -310,7 +313,7 @@ public final class Mapper {
 
     /**
      * Add a new Wrapper to an existing Context.
-     *
+     * 添加一个wrapper 到已存在的context
      * @param hostName Virtual host name this wrapper belongs to
      * @param contextPath Context path this wrapper belongs to
      * @param path Wrapper mapping
@@ -347,7 +350,7 @@ public final class Mapper {
 
     /**
      * Add a wrapper to the context associated with this wrapper.
-     *
+     * 为context添加并关联一个wrapper 
      * @param path Wrapper mapping
      * @param wrapper The Wrapper object
      */
@@ -368,7 +371,9 @@ public final class Mapper {
 
     /**
      * Adds a wrapper to the given context.
-     *
+     * 
+     * 添加一个wrapper 到指定的context
+     * 
      * @param context The context to which to add the wrapper
      * @param path Wrapper mapping
      * @param wrapper The Wrapper object
@@ -1075,6 +1080,8 @@ public final class Mapper {
      * Find a map element given its name in a sorted array of map elements.
      * This will return the index for the closest inferior or equal item in the
      * given array.
+     * 
+     * 给定一个map element 和name,   返回个数组下标.  
      */
     private static final int find(MapElement[] map, String name) {
 

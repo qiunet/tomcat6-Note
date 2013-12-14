@@ -106,7 +106,9 @@ import org.apache.tomcat.util.modeler.Registry;
  * Standard implementation of the <b>Context</b> interface.  Each
  * child container must be a Wrapper implementation to process the
  * requests directed to a particular servlet.
- *
+ * 
+ * 实现了Context接口,  每个子容器必须是一个wrapper实现. 
+ * 
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @version $Revision: 771009 $ $Date: 2009-05-03 09:15:41 +0800 (Sun, 03 May 2009) $
@@ -123,7 +125,8 @@ public class StandardContext
 
 
     /**
-     * Create a new StandardContext component with the default basic Valve.
+     * Create a new StandardContext component with the default basic Valve.]
+     * 建一个新的StandardContext .  基础的vavle会在这个地方被设置.
      */
     public StandardContext() {
 
@@ -146,6 +149,7 @@ public class StandardContext
 
     /**
      * Array containing the safe characters set.
+     * container 安全字符集合
      */
     protected static URLEncoder urlEncoder;
 
@@ -181,6 +185,8 @@ public class StandardContext
 
    /**
      * Associated host name.
+     * 
+     * 关联的hostname
      */
     private String hostName;
 
@@ -200,6 +206,8 @@ public class StandardContext
     /**
      * The set of application listener class names configured for this
      * application, in the order they were encountered in the web.xml file.
+     * 
+     * application listener集合, 在web.xml配置???
      */
     private String applicationListeners[] = new String[0];
     
@@ -336,6 +344,8 @@ public class StandardContext
 
     /**
      * The document root for this web application.
+     * 
+     * 
      */
     private String docBase = null;
 
@@ -343,6 +353,8 @@ public class StandardContext
     /**
      * The exception pages for this web application, keyed by fully qualified
      * class name of the Java exception.
+     * 
+     *  异常页面. 对于404,403等HTTP错误码，tomcat通过映射页面来定制提示信息
      */
     private HashMap exceptionPages = new HashMap();
 
@@ -372,6 +384,7 @@ public class StandardContext
 
     /**
      * Ignore annotations.
+     * 忽略注释
      */
     private boolean ignoreAnnotations = false;
 
@@ -379,6 +392,9 @@ public class StandardContext
     /**
      * The set of classnames of InstanceListeners that will be added
      * to each newly created Wrapper by <code>createWrapper()</code>.
+     * 
+     * 这个集合都是InstanceListeners监听器的className, 他们会添加到每个通过createWrapper() 新建的wrapper.
+     * 
      */
     private String instanceListeners[] = new String[0];
 
@@ -387,12 +403,15 @@ public class StandardContext
 
     /**
      * The login configuration descriptor for this web application.
+     * 
+     * 该web 应用的登录配置
      */
     private LoginConfig loginConfig = null;
 
 
     /**
      * The mapper associated with this context.
+     * 关联映射类.
      */
     private org.apache.tomcat.util.http.mapper.Mapper mapper = 
         new org.apache.tomcat.util.http.mapper.Mapper();
@@ -568,6 +587,9 @@ public class StandardContext
     /**
      * The set of classnames of LifecycleListeners that will be added
      * to each newly created Wrapper by <code>createWrapper()</code>.
+     *  
+     *  这个集合都是LifecycleListeners监听器的className, 他们会添加到每个通过createWrapper() 新建的wrapper.
+     * 
      */
     private String wrapperLifecycles[] = new String[0];
 
@@ -577,6 +599,8 @@ public class StandardContext
     /**
      * The set of classnames of ContainerListeners that will be added
      * to each newly created Wrapper by <code>createWrapper()</code>.
+     * 
+     * 这个集合都是ContainerListeners监听器的className, 他们会添加到每个通过createWrapper() 新建的wrapper.
      */
     private String wrapperListeners[] = new String[0];
 
@@ -2534,6 +2558,7 @@ public class StandardContext
     /**
      * Add a new welcome file to the set recognized by this Context.
      *
+     * 添加一个欢迎文件到context
      * @param name New welcome file name
      */
     public void addWelcomeFile(String name) {
@@ -2561,6 +2586,8 @@ public class StandardContext
      * Add the classname of a LifecycleListener to be added to each
      * Wrapper appended to this Context.
      *
+     * 添加一个LifecycleListener到context
+     * 
      * @param listener Java class name of a LifecycleListener class
      */
     public void addWrapperLifecycle(String listener) {
@@ -2580,6 +2607,8 @@ public class StandardContext
     /**
      * Add the classname of a ContainerListener to be added to each
      * Wrapper appended to this Context.
+     *
+     * 添加一个ContainerListener到context.
      *
      * @param listener Java class name of a ContainerListener class
      */
@@ -2602,6 +2631,10 @@ public class StandardContext
      * the Java implementation class appropriate for this Context
      * implementation.  The constructor of the instantiated Wrapper
      * will have been called, but no properties will have been set.
+     * 
+     * 使用工厂方法为context创建个wrapper实例, 
+     * 
+     * 并为它设置各种 监听  ...
      */
     public Wrapper createWrapper() {
 
@@ -2616,7 +2649,9 @@ public class StandardContext
         } else {
             wrapper = new StandardWrapper();
         }
-
+        
+        
+        // instanceListeners 添加
         synchronized (instanceListenersLock) {
             for (int i = 0; i < instanceListeners.length; i++) {
                 try {
@@ -2630,7 +2665,8 @@ public class StandardContext
                 }
             }
         }
-
+        
+        // wrapperLifecycles 添加
         synchronized (wrapperLifecyclesLock) {
             for (int i = 0; i < wrapperLifecycles.length; i++) {
                 try {
@@ -4908,6 +4944,7 @@ public class StandardContext
 
     /**
      * Given a context path, get the config file name.
+     * 从context 路径得到一个配置文件名称
      */
     protected String getDefaultConfigFile() {
         String basename = null;
@@ -4923,6 +4960,7 @@ public class StandardContext
 
     /**
      * Copy a file.
+     * 
      */
     private boolean copy(File src, File dest) {
         FileInputStream is = null;
@@ -4997,6 +5035,7 @@ public class StandardContext
 
     /**
      * Naming context listener setter.
+     * 
      */
     public void setNamingContextListener(NamingContextListener namingContextListener) {
         this.namingContextListener = namingContextListener;
@@ -5005,6 +5044,8 @@ public class StandardContext
 
     /**
      * Return the request processing paused flag for this Context.
+     * 
+     * 返回context是否暂停
      */
     public boolean getPaused() {
 
@@ -5028,6 +5069,8 @@ public class StandardContext
     /**
      * Post a copy of our current list of welcome files as a servlet context
      * attribute, so that the default servlet can find them.
+     * 
+     *  为了可以让servlet找到欢迎文件.  把所有欢迎文件.设置到context attribute
      */
     private void postWelcomeFiles() {
 

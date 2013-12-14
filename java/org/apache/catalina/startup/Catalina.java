@@ -42,6 +42,8 @@ import org.xml.sax.InputSource;
 
 
 /**
+ * Catalina->Server->Service->容器/连接器/日志器
+ * 
  * Startup/Shutdown shell program for Catalina.  The following command line
  * options are recognized:
  * <ul>
@@ -301,13 +303,19 @@ public class Catalina extends Embedded {
         digester.setClassLoader(StandardServer.class.getClassLoader());
 
         // Configure the actions we will be using
+        // 初始化org.apache.catalina.core.StandardServer
+        //试着读取Server 的className属性.  使用创建对象. 没有默认使用org.apache.catalina.core.StandardServer
         digester.addObjectCreate("Server",
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
+        // 为server 设置属性 由xml决定.
         digester.addSetProperties("Server");
+        
+        
+        // 通过setServer添加到上一级标签
         digester.addSetNext("Server",
                             "setServer",
-                            "org.apache.catalina.Server");
+                            "org.apache.catalina.Server"); //最后一个标签表示参数类型
 
         digester.addObjectCreate("Server/GlobalNamingResources",
                                  "org.apache.catalina.deploy.NamingResources");

@@ -339,6 +339,11 @@ public class StandardWrapper
      * an SC_NOT_FOUND error.  If this date/time is in the future, any request for
      * this servlet will return an SC_SERVICE_UNAVAILABLE error.  If it is zero,
      * the servlet is currently available.
+     * 
+     * 返回servlet的一个有效的时间. 使用从1970-01-01的毫秒数, 
+     * 如果 long的最大值.  意味永久无效, 请求将返回SC_NOT_FOUND错误
+     * 如果  0   有效 
+     * 如果是将来的某个事件.说明无效. 返回SC_SERVICE_UNAVAILABLE错误
      */
     public long getAvailable() {
 
@@ -353,7 +358,10 @@ public class StandardWrapper
      * that unavailability is permanent and any request for this servlet will return
      * an SC_NOT_FOUND error. If this date/time is in the future, any request for
      * this servlet will return an SC_SERVICE_UNAVAILABLE error.
-     *
+     * 设置servlet的一个有效的时间. 使用从1970-01-01的毫秒数, 
+     * 如果 long的最大值.  意味永久无效, 请求将返回SC_NOT_FOUND错误
+     * 如果  0   有效 
+     * 如果是将来的某个事件.说明无效. 返回SC_SERVICE_UNAVAILABLE错误
      * @param available The new available date/time
      */
     public void setAvailable(long available) {
@@ -1040,13 +1048,14 @@ public class StandardWrapper
      * load servlets that are marked in the deployment descriptor to be loaded
      * at server startup time.
      * 
-     * 加载. 并且初始化一个servlet, 如果不是stm模式,  并且有实例. 直接返回.  
+     * 通过自己的类加载器加载. 并且初始化一个servlet, 如果不是stm模式,  并且有实例. 直接返回.  
      * 
      * 
      */
     public synchronized Servlet loadServlet() throws ServletException {
 
         // Nothing to do if we already have an instance or an instance pool
+    	// 如果已经有一个池.或者一个对象. 就不用做任何事情 
         if (!singleThreadModel && (instance != null))
             return instance;
 
@@ -1162,6 +1171,7 @@ public class StandardWrapper
             }
 
             // Instantiate and initialize an instance of the servlet class itself
+            // 初始化  实例. 
             try {
                 servlet = (Servlet) classClass.newInstance();
                 // Annotation processing
@@ -1220,7 +1230,7 @@ public class StandardWrapper
                                                args);
                     args = null;
                 } else {
-                    servlet.init(facade);
+                    servlet.init(facade); //调用init. 初始化
                 }
 
                 // Invoke jspInit on JSP pages
@@ -1672,6 +1682,8 @@ public class StandardWrapper
 
     /**
      * Return <code>true</code> if loading this servlet is allowed.
+     * 
+     *返回是否允许加载
      */
     protected boolean isServletAllowed(Object servlet) {
 

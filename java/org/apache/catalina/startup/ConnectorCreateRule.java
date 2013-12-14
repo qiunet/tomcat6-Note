@@ -33,6 +33,8 @@ import org.apache.juli.logging.Log;
 
 /**
  * Rule implementation that creates a connector.
+ * 
+ * 创建一个连接器的规则实现
  */
 
 public class ConnectorCreateRule extends Rule {

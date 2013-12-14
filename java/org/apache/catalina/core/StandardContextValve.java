@@ -43,8 +43,11 @@ import org.apache.tomcat.util.buf.MessageBytes;
  * <p>
  * <b>USAGE CONSTRAINT</b>:  This implementation is likely to be useful only
  * when processing HTTP requests.
- *
- * @author Craig R. McClanahan
+ * 
+ * 为StandardContext实现的阀
+ * USAGE CONSTRAINT .这个实现.通常用来处理http requests
+ * 
+ * * @author Craig R. McClanahan
  * @version $Revision: 673834 $ $Date: 2008-07-04 06:03:08 +0800 (Fri, 04 Jul 2008) $
  */
 
@@ -91,6 +94,8 @@ final class StandardContextValve
     /**
      * Cast to a StandardContext right away, as it will be needed later.
      * 
+     * 把StandardContext设置到该valve
+     * 
      * @see org.apache.catalina.Contained#setContainer(org.apache.catalina.Container)
      */
     public void setContainer(Container container) {
@@ -103,7 +108,8 @@ final class StandardContextValve
      * Select the appropriate child Wrapper to process this request,
      * based on the specified request URI.  If no matching Wrapper can
      * be found, return an appropriate HTTP error.
-     *
+     * 
+     * 选择一个子wrapper吃力请求,  如果没有匹配的.  返回一个http error
      * @param request Request to be processed
      * @param response Response to be produced
      * @param valveContext Valve context used to forward to the next Valve
@@ -115,6 +121,8 @@ final class StandardContextValve
         throws IOException, ServletException {
 
         // Disallow any direct access to resources under WEB-INF or META-INF
+    	
+    	// 不允许任何请求访问WEB-INF  和 META-INF
         MessageBytes requestPathMB = request.getRequestPathMB();
         if ((requestPathMB.startsWithIgnoreCase("/META-INF/", 0))
             || (requestPathMB.equalsIgnoreCase("/META-INF"))
@@ -301,6 +309,8 @@ final class StandardContextValve
      * should really be using the error reporting settings for this web
      * application, but currently that code runs at the wrapper level rather
      * than the context level.
+     *
+     * 响应一个 404错误
      *
      * @param response The response we are creating
      */
