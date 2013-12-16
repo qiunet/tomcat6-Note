@@ -26,3 +26,10 @@ tomcat 通过bootstrap main方法. 启动.  在启动的时候.根据main 的参
   在Catalina的createStartDigester() 通过解析conf/server.xml  达到上述关联.
   
   在Catalina的start()  .启动Server.  进而启动所有子组件.实现tomcat的运行.
+  
+  
+  
+  ***** 代码没有删减. 没有改变原有英文注释. 注释并不一定代表正确. 如果有不一样的理解.可以留言. 一起探讨.
+  																													
+  																														--qiunet
+	  																													2013年12月16日 
