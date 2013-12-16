@@ -29,20 +29,27 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.util.LifecycleSupport;
 import java.util.concurrent.RejectedExecutionException;
-
+/**
+ * 在server.xml 
+ * <Executor name="tomcatThreadPool" namePrefix="catalina-exec-" 
+    maxThreads="150" minSpareThreads="4"/>
+    指定
+ * @author xiangyang
+ *
+ */
 public class StandardThreadExecutor implements Executor {
     
     // ---------------------------------------------- Properties
     protected int threadPriority = Thread.NORM_PRIORITY;
-
+    /**是否守护进程*/
     protected boolean daemon = true;
-    
+    /**thread 前缀*/
     protected String namePrefix = "tomcat-exec-";
-    
+    /**最大worker线程*/
     protected int maxThreads = 200;
-    
+    /**最小活跃worker线程*/
     protected int minSpareThreads = 25;
-    
+    /**最大空闲*/
     protected int maxIdleTime = 60000;
     
     protected ThreadPoolExecutor executor = null;

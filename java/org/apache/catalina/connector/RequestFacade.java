@@ -41,7 +41,10 @@ import org.apache.catalina.security.SecurityUtil;
 /**
  * Facade class that wraps a Coyote request object.  
  * All methods are delegated to the wrapped request.
- *
+ * 
+ *  request外观类. 实现了HttpServletRequest. 使用Request构造. 所有方法都是调用Reuqest返回. 
+ *  达到隐藏Request的一些私有实现的目的. 也是我们servlet里面使用的HttpServletRequest的实现类
+ * 
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @author Jean-Francois Arcand

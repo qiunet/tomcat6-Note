@@ -40,6 +40,13 @@ import org.apache.tomcat.util.net.JIoEndpoint.Worker;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
+ * JIO 模式.
+ * @see JIoEndpoint
+ * NIO模式参考
+ * @see NioEndpoint
+ * APR 使用C编写的IO这块 .需要编译
+ * @see AprEndpoint
+ * 
  * APR tailored thread pool, providing the following services:
  * <ul>
  * <li>Socket acceptor thread</li>

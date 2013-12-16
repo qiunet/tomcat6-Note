@@ -50,10 +50,19 @@ public class ConnectorCreateRule extends Rule {
      */
     public void begin(Attributes attributes) throws Exception {
         Service svc = (Service)digester.peek();
+        //默认StandardService
         Executor ex = null;
         if ( attributes.getValue("executor")!=null ) {
-            ex = svc.getExecutor(attributes.getValue("executor"));
+        	//默认调用StandardService的getExecutor(String name)
+            ex = svc.getExecutor(attributes.getValue("executor"));  
         }
+        
+        /**
+         * http/1.1 org.apache.coyote.http11.Http11AprProtocol
+         * AJP/1.3  org.apache.coyote.ajp.AjpAprProtocol
+         * 默认 		org.apache.coyote.http11.Http11AprProtocol
+         */
+        
         Connector con = new Connector(attributes.getValue("protocol"));
         if ( ex != null )  _setExecutor(con,ex);
         

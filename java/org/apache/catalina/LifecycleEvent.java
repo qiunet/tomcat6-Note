@@ -27,7 +27,9 @@ import java.util.EventObject;
  * that implements the Lifecycle interface.  In particular, this will be useful
  * on Containers, where these events replace the ContextInterceptor concept in
  * Tomcat 3.x.
- *
+ * 
+ * 生命周期事件定义类.
+ * 
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -41,7 +43,9 @@ public final class LifecycleEvent
 
     /**
      * Construct a new LifecycleEvent with the specified parameters.
-     *
+     * 
+     * 将当前正发生的事件类型以及发生事件的组件 构造新的LifecycleEvent
+     * 
      * @param lifecycle Component on which this event occurred
      * @param type Event type (required)
      */
@@ -74,18 +78,21 @@ public final class LifecycleEvent
 
     /**
      * The event data associated with this event.
+     * 事件数据
      */
     private Object data = null;
 
 
     /**
      * The Lifecycle on which this event occurred.
+     * 正发生事件的组件
      */
     private Lifecycle lifecycle = null;
 
 
     /**
      * The event type this instance represents.
+     * 事件类型
      */
     private String type = null;
 

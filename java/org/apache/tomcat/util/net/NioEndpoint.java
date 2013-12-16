@@ -63,7 +63,17 @@ import org.apache.tomcat.util.net.jsse.NioX509KeyManager;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
+ * JIO 模式.
+ * @see JIoEndpoint
+ * NIO模式参考
+ * @see NioEndpoint
+ * APR 使用C编写的IO这块 .需要编译
+ * @see AprEndpoint
+ * 
  * NIO tailored thread pool, providing the following services:
+ * 
+ * NIO模式的connector.使用的是java.nio编写这块逻辑
+ * 
  * <ul>
  * <li>Socket acceptor thread</li>
  * <li>Socket poller thread</li>

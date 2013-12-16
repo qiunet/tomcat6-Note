@@ -82,6 +82,8 @@ public class Connector
 
     public Connector(String protocol)
         throws Exception {
+    	
+    	//setProtocol 改变协议处理的类
         setProtocol(protocol);
         // Instantiate protocol handler
         try {
@@ -705,7 +707,8 @@ public class Connector
 
     /**
      * Set the Coyote protocol which will be used by the connector.
-     * 设置connector的协议
+     * 根据server.xml 的Connector 的protocol 设置协议使用的连接器类名.
+     * 
      * @param protocol The Coyote protocol name
      */
     public void setProtocol(String protocol) {
@@ -721,6 +724,7 @@ public class Connector
                 setProtocolHandlerClassName
                     ("org.apache.coyote.ajp.AjpAprProtocol");
             } else if (protocol != null) {
+            	//如果直接填写的类包名 .也行
                 setProtocolHandlerClassName(protocol);
             } else {
                 setProtocolHandlerClassName
@@ -743,6 +747,7 @@ public class Connector
 
     /**
      * Return the class name of the Coyote protocol handler in use.
+     * 返回该连接器使用的协议处理类
      */
     public String getProtocolHandlerClassName() {
 

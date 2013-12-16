@@ -38,6 +38,9 @@ import org.apache.catalina.security.SecurityUtil;
  * Facade class that wraps a Coyote response object. 
  * All methods are delegated to the wrapped response.
  *
+ * Response的外观类.  屏蔽了非本包对Response类的一些关键方法访问.
+ * 
+ *
  * @author Remy Maucherat
  * @author Jean-Francois Arcand
  * @version $Revision: 505593 $ $Date: 2007-02-10 08:54:56 +0800 (Sat, 10 Feb 2007) $

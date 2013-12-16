@@ -28,6 +28,8 @@ import org.apache.catalina.core.StandardServer;
  * component hierarchy.  This is important for administration tools
  * that are built around the internal component implementation classes.
  *
+ * Server工厂(其实就是单例拉).  默认是StandardServer.
+ * 
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -40,6 +42,8 @@ public class ServerFactory {
 
     /**
      * The singleton <code>Server</code> instance for this JVM.
+     * 
+     * 单例server实例
      */
     private static Server server = null;
 
@@ -63,6 +67,8 @@ public class ServerFactory {
      * method must <strong>only</strong> be called from a constructor of
      * the (singleton) <code>Server</code> instance that is created for
      * this execution of Catalina.
+     * 
+     * 设置一个单例的Server实例.  这个方法仅能被server构造调用.
      *
      * @param theServer The new singleton instance
      */

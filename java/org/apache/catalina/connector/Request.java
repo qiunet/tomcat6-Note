@@ -74,7 +74,11 @@ import org.apache.catalina.util.StringParser;
 
 /**
  * Wrapper object for the Coyote request.
- *
+ * 
+ * coyote是tomcat的Connector框架的名字
+ * 就是我们熟悉的HttpServletRequest的实现. 不过跟我们使用的还不是一样. 我们使用的是他的外观类
+ * @see RequestFacade
+ * 
  * @author Remy Maucherat
  * @author Craig R. McClanahan
  * @version $Revision: 750918 $ $Date: 2009-03-06 22:34:44 +0800 (Fri, 06 Mar 2009) $
@@ -162,18 +166,21 @@ public class Request
 
     /**
      * The default Locale if none are specified.
+     * 
      */
     protected static Locale defaultLocale = Locale.getDefault();
 
 
     /**
      * The attributes associated with this Request, keyed by attribute name.
+     * 熟悉的attributes
      */
     protected HashMap attributes = new HashMap();
 
 
     /**
      * List of read only attributes for this Request.
+     * 
      */
     private HashMap readOnlyAttributes = new HashMap();
 
@@ -377,6 +384,8 @@ public class Request
     /**
      * Release all object references, and initialize instance variables, in
      * preparation for reuse of this object.
+     * 
+     * 释放所有对象引用.  初始化对象变量. 可以回收再次使用
      */
     public void recycle() {
 
@@ -510,6 +519,7 @@ public class Request
      * must be called as soon as the appropriate Context is identified, because
      * it identifies the value to be returned by <code>getContextPath()</code>,
      * and thus enables parsing of the request URI.
+     *
      *
      * @param context The newly associated Context
      */
@@ -2424,9 +2434,11 @@ public class Request
 
     /**
      * Parse request parameters.
+     * 
+     * 解析参数
      */
     protected void parseParameters() {
-
+    	// 解析标志 . 如果已经解析.在取参数的时候.就不在调用该方法
         parametersParsed = true;
 
         Parameters parameters = coyoteRequest.getParameters();

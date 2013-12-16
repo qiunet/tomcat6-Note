@@ -29,8 +29,14 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
- * Handle incoming TCP connections.
+ * JIO 模式.
+ * @see JIoEndpoint
+ * NIO模式参考
+ * @see NioEndpoint
+ * APR 使用C编写的IO这块 .需要编译
+ * @see AprEndpoint
  * 
+ * Handle incoming TCP connections.
  *  处理进来的tcp链接
  * 
  * This class implement a simple server model: one listener thread accepts on a socket and
@@ -158,6 +164,8 @@ public class JIoEndpoint {
 
     /**
      * External Executor based thread pool.
+     * 基于线程池的执行器 里面有很多参数.  maxThread maxActive...
+     * 
      */
     protected Executor executor = null;
     public void setExecutor(Executor executor) { this.executor = executor; }
@@ -594,6 +602,8 @@ public class JIoEndpoint {
             // Create worker collection
             // 创建worker
             if (executor == null) {
+            	// executor 在server.xml中的Connector标签. 如果指定了executor则会被set. 就不会是null
+            	
                 workers = new WorkerStack(maxThreads);
             }
 
@@ -818,6 +828,7 @@ public class JIoEndpoint {
      */
     protected boolean processSocket(Socket socket) {
         try {
+        	// server.xml 指定. 如果executor 不为空.就将socket交给executor
             if (executor == null) {
                 getWorkerThread().assign(socket);
             } else {
@@ -862,6 +873,7 @@ public class JIoEndpoint {
             if (end < workers.length) {
                 workers[end++] = worker;
             } else {
+            	// 没有引用 .交给GC回收了.  所以curThreads--
                 curThreads--;
             }
         }

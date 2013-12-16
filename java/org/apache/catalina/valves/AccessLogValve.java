@@ -54,12 +54,14 @@ import org.apache.juli.logging.LogFactory;
  * Apache <code>mod_log_config</code> module.  As an additional feature,
  * automatic rollover of log files when the date changes is also supported.</p>
  *
+ * 实现阀的接口 按照配置模版打印访问日志(access log).
+ *
  * <p>Patterns for the logged message may include constant text or any of the
  * following replacement strings, for which the corresponding information
  * from the specified Response is substituted:</p>
  * <ul>
- * <li><b>%a</b> - Remote IP address
- * <li><b>%A</b> - Local IP address
+ * <li><b>%a</b> - Remote IP address 远程ip
+ * <li><b>%A</b> - Local IP address  本地ip
  * <li><b>%b</b> - Bytes sent, excluding HTTP headers, or '-' if no bytes
  *     were sent
  * <li><b>%B</b> - Bytes sent, excluding HTTP headers
@@ -174,6 +176,8 @@ public class AccessLogValve
 
     /**
      * The prefix that is added to log file filenames.
+     * 
+     * 日志文件前缀
      */
     protected String prefix = "access_log.";
 
@@ -199,12 +203,16 @@ public class AccessLogValve
 
     /**
      * Has this component been started yet?
+     * 
+     * 组件是否启动
      */
     protected boolean started = false;
 
 
     /**
      * The suffix that is added to log file filenames.
+     * 
+     * 后缀
      */
     protected String suffix = "";
 
@@ -218,6 +226,8 @@ public class AccessLogValve
     /**
      * A date formatter to format a Date into a date in the format
      * "yyyy-MM-dd".
+     * 
+     * 文件dateformat
      */
     protected SimpleDateFormat fileDateFormatter = null;
 
@@ -225,6 +235,8 @@ public class AccessLogValve
     /**
      * A date formatter to format Dates into a day string in the format
      * "dd".
+     * 
+     * 
      */
     private SimpleDateFormat dayFormatter = null;
 
@@ -1366,6 +1378,7 @@ public class AccessLogValve
 
     /**
      * parse pattern string and create the array of AccessLogElement
+     * 解析模版
      */
     protected AccessLogElement[] createLogElements() {
         List<AccessLogElement> list = new ArrayList<AccessLogElement>();
@@ -1435,6 +1448,8 @@ public class AccessLogValve
 
     /**
      * create an AccessLogElement implementation
+     * 
+     * 原来是通过这个解析 日志模版
      */
     private AccessLogElement createAccessLogElement(char pattern) {
         switch (pattern) {

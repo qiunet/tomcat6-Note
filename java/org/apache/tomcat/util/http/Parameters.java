@@ -345,7 +345,13 @@ public final class Parameters extends MultiMap {
     public void processParameters( byte bytes[], int start, int len ) {
         processParameters(bytes, start, len, encoding);
     }
-
+    /**
+     * 真正的解析的地方.  逐字符循环.  并进行判断
+     * @param bytes
+     * @param start
+     * @param len
+     * @param enc
+     */
     public void processParameters( byte bytes[], int start, int len, 
                                    String enc ) {
         int end=start+len;

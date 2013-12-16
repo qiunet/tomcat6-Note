@@ -55,7 +55,8 @@ import org.apache.tomcat.util.net.URL;
 
 /**
  * Wrapper object for the Coyote response.
- *
+ *  响应类
+ * 
  * @author Remy Maucherat
  * @author Craig R. McClanahan
  * @version $Revision: 749019 $ $Date: 2009-03-01 20:47:54 +0800 (Sun, 01 Mar 2009) $

@@ -131,18 +131,25 @@ public interface Service {
 
     /**
      * Adds a named executor to the service
+     * 
+     * 添加executor
+     * 
      * @param ex Executor
      */
     public void addExecutor(Executor ex);
 
     /**
      * Retrieves all executors
+     * 返回所有executor
      * @return Executor[]
      */
     public Executor[] findExecutors();
 
     /**
      * Retrieves executor by name, null if not found
+     * 
+     * 通过名称找到executor.没有返回null
+     * 
      * @param name String
      * @return Executor
      */
@@ -150,6 +157,9 @@ public interface Service {
     
     /**
      * Removes an executor from the service
+     * 
+     * 删除一个executor
+     * 
      * @param ex Executor
      */
     public void removeExecutor(Executor ex);
