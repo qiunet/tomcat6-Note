@@ -55,7 +55,8 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Processes HTTP requests.
- *
+ * 
+ * 处理http   请求
  * @author Remy Maucherat
  */
 public class Http11Processor implements ActionHook {
@@ -112,6 +113,8 @@ public class Http11Processor implements ActionHook {
 
     /**
      * Request object.
+     * 
+     * 
      */
     protected Request request = null;
 
@@ -136,24 +139,28 @@ public class Http11Processor implements ActionHook {
 
     /**
      * State flag.
+     * 是否启动
      */
     protected boolean started = false;
 
 
     /**
      * Error flag.
+     * 是否错误
      */
     protected boolean error = false;
 
 
     /**
      * Keep-alive.
+     * 
      */
     protected boolean keepAlive = true;
 
 
     /**
      * HTTP/1.1 flag.
+     * HTTP/1.1 标志
      */
     protected boolean http11 = true;
 
@@ -203,18 +210,21 @@ public class Http11Processor implements ActionHook {
 
     /**
      * Socket associated with the current connection.
+     * 存放connector 分配的Socket(来自客户端)
      */
     protected Socket socket;
 
 
     /**
      * Remote Address associated with the current connection.
+     * 远程地址
      */
     protected String remoteAddr = null;
 
 
     /**
      * Remote Host associated with the current connection.
+     * 远程主机
      */
     protected String remoteHost = null;
 
@@ -228,12 +238,14 @@ public class Http11Processor implements ActionHook {
 
     /**
      * Local port to which the socket is connected
+     * 本地port
      */
     protected int localPort = -1;
 
 
     /**
      * Remote port to which the socket is connected
+     * 远程端口
      */
     protected int remotePort = -1;
 
@@ -300,6 +312,8 @@ public class Http11Processor implements ActionHook {
 
     /**
      * Associated endpoint.
+     * 
+     * 关联的JIoEndpoint
      */
     protected JIoEndpoint endpoint;
 
@@ -458,6 +472,8 @@ public class Http11Processor implements ActionHook {
 
     /**
      * Add input or output filter.
+     * 
+     * 添加指定classname filter
      *
      * @param className class name of the filter
      */
@@ -744,6 +760,8 @@ public class Http11Processor implements ActionHook {
     /**
      * Process pipelined HTTP requests using the specified input and output
      * streams.
+     * 
+     * 处理http
      *
      * @param input stream from which the HTTP requests will be read
      * @param output stream which will be used to output the HTTP
@@ -767,7 +785,7 @@ public class Http11Processor implements ActionHook {
         this.socket = socket;
         inputBuffer.setInputStream(socket.getInputStream());
         outputBuffer.setOutputStream(socket.getOutputStream());
-
+        
         // Error flag
         error = false;
         keepAlive = true;

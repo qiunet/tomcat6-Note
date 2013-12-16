@@ -60,6 +60,8 @@ import org.apache.tomcat.util.modeler.Registry;
  * no session persistence or distributable capabilities.  This class may
  * be subclassed to create more sophisticated Manager implementations.
  *
+ * session 支持类
+ *
  * @author Craig R. McClanahan
  * @version $Revision: 750918 $ $Date: 2009-03-06 22:34:44 +0800 (Fri, 06 Mar 2009) $
  */
@@ -89,6 +91,8 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
 
     /**
      * The Container with which this Manager is associated.
+     * 
+     * 关联的Container
      */
     protected Container container;
 
@@ -551,6 +555,7 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
             }
             try {
                 // Construct and seed a new random number generator
+            	//使用一个随机数发生器作为种子 构造.  
                 Class clazz = Class.forName(randomClass);
                 this.random = (Random) clazz.newInstance();
                 this.random.setSeed(seed);
@@ -1124,6 +1129,7 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
     /** 
      * For debugging: return a list of all session ids currently active
      *
+     * 返回所有活跃的sessionid.
      */
     public String listSessionIds() {
         StringBuffer sb=new StringBuffer();
@@ -1137,7 +1143,7 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
 
     /** 
      * For debugging: get a session attribute
-     *
+     * 得到sessionid对应的session.中某个key 的value
      * @param sessionId
      * @param key
      * @return The attribute value, if found, null otherwise
@@ -1160,6 +1166,9 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
      * 
      * <p>The session information is organized as a HashMap, mapping 
      * session attribute names to the String representation of their values.
+     *
+     * 根据sessionid 返回相关信息
+     * 其实就是一个hashmap.  使用sessionid 关联sessions.然后获得相关的attribute
      *
      * @param sessionId Session id
      * 
@@ -1190,7 +1199,10 @@ public abstract class ManagerBase implements Manager, MBeanRegistration {
         return map;
     }
 
-
+    /**
+     * 让一个sessionid 失效
+     * @param sessionId
+     */
     public void expireSession( String sessionId ) {
         Session s=(Session)sessions.get(sessionId);
         if( s==null ) {

@@ -30,11 +30,16 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Handle incoming TCP connections.
- *
+ * 
+ *  处理进来的tcp链接
+ * 
  * This class implement a simple server model: one listener thread accepts on a socket and
  * creates a new worker thread for each incoming connection.
  *
+ *  这个类实现了简单的server模型. 一个socket监听服务.  然后创建新的worker thread(是从池里取,并非每次新建) 处理每个进来的链接.(socket)
+ * 
  * More advanced Endpoints will reuse the threads, use queues, etc.
+ *  更高级的是回收. 然后使用队列等..
  *
  * @author James Duncan Davidson
  * @author Jason Hunter
@@ -83,36 +88,43 @@ public class JIoEndpoint {
 
     /**
      * Available workers.
+     * 
+     * worker 队列. WorkerStack 自己实现的内部类
      */
     protected WorkerStack workers = null;
 
 
     /**
      * Running state of the endpoint.
+     * 该组件是否 运行
      */
     protected volatile boolean running = false;
 
 
     /**
      * Will be set to true whenever the endpoint is paused.
+     * 当暂停时.将被设置为true
      */
     protected volatile boolean paused = false;
 
 
     /**
      * Track the initialization state of the endpoint.
+     * 是否被初始化
      */
     protected boolean initialized = false;
 
 
     /**
      * Current worker threads busy count.
+     * 当前使用的worker threads数
      */
     protected int curThreadsBusy = 0;
 
 
     /**
      * Current worker threads count.
+     * 当前所有的worker threads数
      */
     protected int curThreads = 0;
 
@@ -125,6 +137,8 @@ public class JIoEndpoint {
 
     /**
      * Associated server socket.
+     * 
+     * 当然是最重要的serverSocket拉, 请求都是他收到的.
      */
     protected ServerSocket serverSocket = null;
 
@@ -134,6 +148,8 @@ public class JIoEndpoint {
 
     /**
      * Acceptor thread count.
+     * 
+     * serverSocket的数量. 一般起来是1哦.
      */
     protected int acceptorThreadCount = 0;
     public void setAcceptorThreadCount(int acceptorThreadCount) { this.acceptorThreadCount = acceptorThreadCount; }
@@ -150,6 +166,7 @@ public class JIoEndpoint {
 
     /**
      * Maximum amount of worker threads.
+     * 最大worker threads.数
      */
     protected int maxThreads = 200;
     public void setMaxThreads(int maxThreads) {
@@ -173,6 +190,7 @@ public class JIoEndpoint {
     
     /**
      * Server socket port.
+     * 端口
      */
     protected int port;
     public int getPort() { return port; }
@@ -189,6 +207,7 @@ public class JIoEndpoint {
 
     /**
      * Handling of accepted sockets.
+     * 处理接受的socket
      */
     protected Handler handler = null;
     public void setHandler(Handler handler ) { this.handler = handler; }
@@ -199,6 +218,7 @@ public class JIoEndpoint {
      * Allows the server developer to specify the backlog that
      * should be used for server sockets. By default, this value
      * is 100.
+     * 最大阻塞socket接口量 .默认100
      */
     protected int backlog = 100;
     public void setBacklog(int backlog) { if (backlog > 0) this.backlog = backlog; }
@@ -233,6 +253,8 @@ public class JIoEndpoint {
      * The default is true - the created threads will be
      *  in daemon mode. If set to false, the control thread
      *  will not be daemon - and will keep the process alive.
+     *  
+     *  新建线程是否是守护线程.  默认是true 。
      */
     protected boolean daemon = true;
     public void setDaemon(boolean b) { daemon = b; }
@@ -241,6 +263,7 @@ public class JIoEndpoint {
 
     /**
      * Name of the thread pool, which will be used for naming child threads.
+     * worker thread 命名. name+threadCount
      */
     protected String name = "TP";
     public void setName(String name) { this.name = name; }
@@ -249,6 +272,7 @@ public class JIoEndpoint {
 
     /**
      * Server socket factory.
+     * Server socket 工厂
      */
     protected ServerSocketFactory serverSocketFactory = null;
     public void setServerSocketFactory(ServerSocketFactory factory) { this.serverSocketFactory = factory; }
@@ -279,6 +303,8 @@ public class JIoEndpoint {
      * Bare bones interface used for socket processing. Per thread data is to be
      * stored in the ThreadWithAttributes extra folders, or alternately in
      * thread local fields.
+     * 
+     * 处理socket的一个接口定义
      */
     public interface Handler {
         public boolean process(Socket socket);
@@ -290,6 +316,10 @@ public class JIoEndpoint {
 
     /**
      * Server socket acceptor thread.
+     * 
+     * Server socket接收器线程.
+     * 
+     * 一直run. 将接受到的socket异步处理. 
      */
     protected class Acceptor implements Runnable {
 
@@ -297,13 +327,17 @@ public class JIoEndpoint {
         /**
          * The background thread that listens for incoming TCP/IP connections and
          * hands them off to an appropriate processor.
+         * 
+         * 后台线程监听进来的TCP/IP链接. 并且选择一个processor异步处理
          */
         public void run() {
 
             // Loop until we receive a shutdown command
+        	// 循环.知道得到shutdown命令
             while (running) {
 
                 // Loop if endpoint is paused
+            	// 如果暂停.就sleep
                 while (paused) {
                     try {
                         Thread.sleep(1000);
@@ -313,12 +347,15 @@ public class JIoEndpoint {
                 }
 
                 // Accept the next incoming connection from the server socket
+                //从server socket接受下一个进来的链接
                 try {
                     Socket socket = serverSocketFactory.acceptSocket(serverSocket);
                     serverSocketFactory.initSocket(socket);
                     // Hand this socket off to an appropriate processor
+                    //处理socket
                     if (!processSocket(socket)) {
                         // Close socket right away
+                    	//最后关闭该socket
                         try {
                             socket.close();
                         } catch (IOException e) {
@@ -332,7 +369,7 @@ public class JIoEndpoint {
                 }
 
                 // The processor will recycle itself when it finishes
-
+                // 这个processor 将被回收.在最后.
             }
 
         }
@@ -346,6 +383,8 @@ public class JIoEndpoint {
     /**
      * This class is the equivalent of the Worker, but will simply use in an
      * external Executor thread pool.
+     * 
+     * 相当worker. 
      */
     protected class SocketProcessor implements Runnable {
         
@@ -358,6 +397,7 @@ public class JIoEndpoint {
         public void run() {
 
             // Process the request from this socket
+        	// 处理请求.
             if (!setSocketOptions(socket) || !handler.process(socket)) {
                 // Close socket
                 try {
@@ -390,12 +430,20 @@ public class JIoEndpoint {
          * <b>NOTE</b>:  This method is called from our Connector's thread.  We
          * must assign it to our own thread so that multiple simultaneous
          * requests can be handled.
+         * 
+         * 处理从Connector 线程进来的Socket. 
+         * 
+         * 默认情况.available 是false,  所以.分配过来的socket设置到局部变量.  available变成false.
+         * 然后唤醒等待的线程. await.await获得有socket进入. 立即将局部变量的socket交给run()
+         * 然后交handler.process(socket)处理! 所有的执行都是当即返回. 以免主线程阻塞!
+         * 
          *
          * @param socket TCP socket to process
          */
         synchronized void assign(Socket socket) {
 
             // Wait for the Processor to get the previous Socket
+        	// 等待Processor得到先前的socket.
             while (available) {
                 try {
                     wait();
@@ -413,7 +461,9 @@ public class JIoEndpoint {
         
         /**
          * Await a newly assigned Socket from our Connector, or <code>null</code>
-         * if we are supposed to shut down.
+         * if we are supposed to shut down
+         * 
+         * 等待一个新的分配的socket.
          */
         private synchronized Socket await() {
 
@@ -439,6 +489,8 @@ public class JIoEndpoint {
         /**
          * The background thread that listens for incoming TCP/IP connections and
          * hands them off to an appropriate processor.
+         * 
+         * 后台线程监听进来的TCP/IP. 并且处理他.
          */
         public void run() {
 
@@ -461,6 +513,8 @@ public class JIoEndpoint {
 
                 // Finish up this request
                 socket = null;
+               
+                //使用完了. 回收.
                 recycleWorkerThread(this);
 
             }
@@ -470,6 +524,8 @@ public class JIoEndpoint {
 
         /**
          * Start the background processing thread.
+         * 
+         * 启动一个Worker
          */
         public void start() {
             thread = new Thread(this);
@@ -483,7 +539,12 @@ public class JIoEndpoint {
 
 
     // -------------------- Public methods --------------------
-
+    /**
+     * 初始化serverSocket.
+     * 
+     * 
+     * @throws Exception
+     */
     public void init()
         throws Exception {
 
@@ -491,6 +552,7 @@ public class JIoEndpoint {
             return;
         
         // Initialize thread count defaults for acceptor
+        
         if (acceptorThreadCount == 0) {
             acceptorThreadCount = 1;
         }
@@ -530,6 +592,7 @@ public class JIoEndpoint {
             paused = false;
 
             // Create worker collection
+            // 创建worker
             if (executor == null) {
                 workers = new WorkerStack(maxThreads);
             }
@@ -658,15 +721,24 @@ public class JIoEndpoint {
      * processing a specific HTTP request, if possible.  If the maximum
      * allowed processors have already been created and are in use, return
      * <code>null</code> instead.
+     * 
+     * 创建一个新的.或者从队列分配一个Worker. 如果最大processors了. 并且没有空闲的.  那么返回null.
+     * 
+     * maxThreads < 0 表示不限制worker创建数 .
+     * 
+     * 这些都是根据配置来进行的.默认是200
      */
     protected Worker createWorkerThread() {
 
         synchronized (workers) {
             if (workers.size() > 0) {
+            	//如果有现成的. 直接返回
+            	
                 curThreadsBusy++;
                 return workers.pop();
             }
             if ((maxThreads > 0) && (curThreads < maxThreads)) {
+            	//如果maxThreads大于0 . 并且当前已有小于它. 创建一个新的.
                 curThreadsBusy++;
                 if (curThreadsBusy == maxThreads) {
                     log.info(sm.getString("endpoint.info.maxThreads",
@@ -675,8 +747,11 @@ public class JIoEndpoint {
                 }
                 return (newWorkerThread());
             } else {
+            	
                 if (maxThreads < 0) {
-                    curThreadsBusy++;
+                    // 如果maxThreads小于0   worker管够.  除非机器受不了(毕竟是在跑的线程)
+                	
+                	curThreadsBusy++;
                     return (newWorkerThread());
                 } else {
                     return (null);
@@ -690,6 +765,8 @@ public class JIoEndpoint {
     /**
      * Create and return a new processor suitable for processing HTTP
      * requests and returning the corresponding responses.
+     * 
+     * 创建一个新的worker. 并启动他的线程
      */
     protected Worker newWorkerThread() {
 
@@ -702,6 +779,7 @@ public class JIoEndpoint {
 
     /**
      * Return a new worker thread, and block while to worker is available.
+     * 从自己的队列取一个worker.并且返回
      */
     protected Worker getWorkerThread() {
         // Allocate a new worker thread
@@ -722,7 +800,7 @@ public class JIoEndpoint {
 
     /**
      * Recycle the specified Processor so that it can be used again.
-     *
+     *  回收指定的Processor. 他们可以再次被使用.
      * @param workerThread The processor to be recycled
      */
     protected void recycleWorkerThread(Worker workerThread) {
@@ -736,6 +814,7 @@ public class JIoEndpoint {
 
     /**
      * Process given socket.
+     * 处理指定的socket
      */
     protected boolean processSocket(Socket socket) {
         try {
@@ -756,7 +835,11 @@ public class JIoEndpoint {
 
     // ------------------------------------------------- WorkerStack Inner Class
 
-
+    /**
+     * 自己实现的一个队列
+     * @author xiangyang
+     *
+     */
     public class WorkerStack {
         
         protected Worker[] workers = null;
@@ -769,6 +852,8 @@ public class JIoEndpoint {
         /** 
          * Put the object into the queue. If the queue is full (for example if
          * the queue has been reduced in size) the object will be dropped.
+         * 
+         * 把object放入队列.如果队列满的.  object将被丢弃.
          * 
          * @param   object  the object to be appended to the queue (first
          *                  element).
@@ -784,6 +869,7 @@ public class JIoEndpoint {
         /**
          * Get the first object out of the queue. Return null if the queue
          * is empty. 
+         * 返回第一个对象.没有返回null
          */
         public Worker pop() {
             if (end > 0) {
@@ -817,6 +903,8 @@ public class JIoEndpoint {
         /**
          * Resize the queue. If there are too many objects in the queue for the
          * new size, drop the excess.
+         *  
+         *  使用新的长度格式数组. 多的将丢弃
          * 
          * @param newSize
          */

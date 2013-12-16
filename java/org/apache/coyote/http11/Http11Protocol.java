@@ -49,6 +49,9 @@ import org.apache.tomcat.util.res.StringManager;
  * Abstract the protocol implementation, including threading, etc.
  * Processor is single threaded and specific to stream-based protocols,
  * will not fit Jk protocols like JNI.
+ * 
+ * server.xml指定了protocol.  然后交由该类处理.
+ * 启动JioEndPoint
  *
  * @author Remy Maucherat
  * @author Costin Manolache
@@ -182,7 +185,9 @@ public class Http11Protocol
             log.info(sm.getString("http11protocol.init", getName()));
 
     }
-
+    /**
+     * 启动endpoint.serverSocket.
+     */
     public void start() throws Exception {
         if (this.domain != null) {
             try {
