@@ -46,6 +46,9 @@ import org.apache.catalina.Executor;
  * Standard implementation of the <code>Service</code> interface.  The
  * associated Container is generally an instance of Engine, but this is
  * not required.
+ * 
+ * service 接口的标准实现.  关联的容器通常是engine,  但是不是必需的
+ *  
  *
  * @author Craig R. McClanahan
  */
@@ -61,6 +64,8 @@ public class StandardService
 
     /**
      * Descriptive information about this component implementation.
+     * 
+     * 对该组件的描述
      */
     private static final String info =
         "org.apache.catalina.core.StandardService/1.0";
@@ -68,12 +73,14 @@ public class StandardService
 
     /**
      * The name of this service.
+     * 该service的名称.  在server.xml的name标签定义
      */
     private String name = null;
 
 
     /**
      * The lifecycle event support for this component.
+     * 事件监听组件支持类
      */
     private LifecycleSupport lifecycle = new LifecycleSupport(this);
 
@@ -86,11 +93,13 @@ public class StandardService
 
     /**
      * The <code>Server</code> that owns this Service, if any.
+     * 关联的上一级组件.server.
      */
     private Server server = null;
 
     /**
      * Has this component been started?
+     * 是否已经启动
      */
     private boolean started = false;
 
@@ -103,11 +112,12 @@ public class StandardService
 
     /**
      * The set of Connectors associated with this Service.
+     * 关联该service的connectors 集合
      */
     protected Connector connectors[] = new Connector[0];
     
     /**
-     * 
+     * 执行器的一个集合数组.
      */
     protected ArrayList<Executor> executors = new ArrayList<Executor>();
 
@@ -115,12 +125,14 @@ public class StandardService
      * The Container associated with this Service. (In the case of the
      * org.apache.catalina.startup.Embedded subclass, this holds the most
      * recently added Engine.)
+     * 关联的下一级容器engine.
      */
     protected Container container = null;
 
 
     /**
      * Has this component been initialized?
+     * 是否被初始化
      */
     protected boolean initialized = false;
 
@@ -131,6 +143,8 @@ public class StandardService
     /**
      * Return the <code>Container</code> that handles requests for all
      * <code>Connectors</code> associated with this Service.
+     * 
+     * 得到关联的容器
      */
     public Container getContainer() {
 
@@ -142,6 +156,11 @@ public class StandardService
     /**
      * Set the <code>Container</code> that handles requests for all
      * <code>Connectors</code> associated with this Service.
+     *
+     * 设置关联的容器. 如果是engine .调用engine的setService()
+     * 如果是 lifecycle.  调用start()
+     *
+     * 将connectors的container 替换
      *
      * @param container The new Container
      */
@@ -175,6 +194,7 @@ public class StandardService
         }
 
         // Report this property change to interested listeners
+        // 属性变化监听报告
         support.firePropertyChange("container", oldContainer, this.container);
 
     }
@@ -191,6 +211,8 @@ public class StandardService
      * Return descriptive information about this Service implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
+     * 
+     * 返回info
      */
     public String getInfo() {
 
@@ -201,6 +223,7 @@ public class StandardService
 
     /**
      * Return the name of this Service.
+     * 返回service的name属性
      */
     public String getName() {
 
@@ -212,6 +235,7 @@ public class StandardService
     /**
      * Set the name of this Service.
      *
+     *设置service的name
      * @param name The new service name
      */
     public void setName(String name) {
@@ -223,6 +247,7 @@ public class StandardService
 
     /**
      * Return the <code>Server</code> with which we are associated (if any).
+     * 得到关联的server.
      */
     public Server getServer() {
 
@@ -233,6 +258,7 @@ public class StandardService
 
     /**
      * Set the <code>Server</code> with which we are associated (if any).
+     * 设置关联的server
      *
      * @param server The server that owns this Service
      */
@@ -249,6 +275,7 @@ public class StandardService
     /**
      * Add a new Connector to the set of defined Connectors, and associate it
      * with this Service's Container.
+     * 添加一个connector到当前定义的connectors数组.  并且对它做关联.  container . service等等
      *
      * @param connector The Connector to be added
      */
@@ -319,6 +346,8 @@ public class StandardService
      * Remove the specified Connector from the set associated from this
      * Service.  The removed Connector will also be disassociated from our
      * Container.
+     * 
+     * 删除一个指定的connector. 并且取消它的关联.
      *
      * @param connector The Connector to be removed
      */
@@ -336,11 +365,14 @@ public class StandardService
                 return;
             if (started && (connectors[j] instanceof Lifecycle)) {
                 try {
+                	//停止connector
                     ((Lifecycle) connectors[j]).stop();
                 } catch (LifecycleException e) {
                     log.error("Connector.stop", e);
                 }
             }
+            
+            //就是把container  service设置为null
             connectors[j].setContainer(null);
             connector.setService(null);
             int k = 0;
@@ -422,6 +454,8 @@ public class StandardService
     
     /**
      * Adds a named executor to the service
+     * 
+     * 添加一个执行器到当前service 的集合.
      * @param ex Executor
      */
     public void addExecutor(Executor ex) {
@@ -452,6 +486,7 @@ public class StandardService
 
     /**
      * Retrieves executor by name, null if not found
+     * 通过name属性返回一个执行器. 没有返回null
      * @param name String
      * @return Executor
      */
@@ -489,6 +524,12 @@ public class StandardService
      * methods of this component are utilized.  It should also send a
      * LifecycleEvent of type START_EVENT to any registered listeners.
      *
+     *传说中的start()  
+     *首先是启动container.
+     *启动executor
+     *启动connector
+     *
+     *
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents this component from being used
      */
@@ -510,6 +551,7 @@ public class StandardService
         started = true;
 
         // Start our defined Container first
+        // 启动我们的container
         if (container != null) {
             synchronized (container) {
                 if (container instanceof Lifecycle) {
@@ -517,7 +559,7 @@ public class StandardService
                 }
             }
         }
-
+        // 启动executors的所有执行器.
         synchronized (executors) {
             for ( int i=0; i<executors.size(); i++ ) {
                 executors.get(i).start();
@@ -525,6 +567,7 @@ public class StandardService
         }
 
         // Start our defined Connectors second
+        //启动connector
         synchronized (connectors) {
             for (int i = 0; i < connectors.length; i++) {
                 if (connectors[i] instanceof Lifecycle)
@@ -533,6 +576,7 @@ public class StandardService
         }
         
         // Notify our interested LifecycleListeners
+        //事件的通知
         lifecycle.fireLifecycleEvent(AFTER_START_EVENT, null);
 
     }
@@ -544,6 +588,8 @@ public class StandardService
      * instance of this component.  It should also send a LifecycleEvent
      * of type STOP_EVENT to any registered listeners.
      *
+     *
+     * 停止也是跟start一样的顺序.
      * @exception LifecycleException if this component detects a fatal error
      *  that needs to be reported
      */
@@ -627,6 +673,8 @@ public class StandardService
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
+     * 
+     * 启动前的一些初始数据设定. 在unix下绑定一个的接口....
      */
     public void initialize()
             throws LifecycleException
