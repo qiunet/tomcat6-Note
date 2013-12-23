@@ -424,7 +424,11 @@ public class JIoEndpoint {
     
     // ----------------------------------------------------- Worker Inner Class
 
-
+    /**
+     * Server processor class.
+     * 
+     * 处说中的worker.  处理socket的类
+     */
     protected class Worker implements Runnable {
 
         protected Thread thread = null;
@@ -854,7 +858,7 @@ public class JIoEndpoint {
     public class WorkerStack {
         
         protected Worker[] workers = null;
-        protected int end = 0;
+        protected int end = 0; // 不为null的长度
         
         public WorkerStack(int size) {
             workers = new Worker[size];

@@ -70,9 +70,9 @@ import org.apache.tomcat.util.res.StringManager;
  * APR 使用C编写的IO这块 .需要编译
  * @see AprEndpoint
  * 
- * NIO tailored thread pool, providing the following services:
- * 
  * NIO模式的connector.使用的是java.nio编写这块逻辑
+ * 
+ * NIO tailored thread pool, providing the following services:
  * 
  * <ul>
  * <li>Socket acceptor thread</li>
@@ -152,12 +152,14 @@ public class NioEndpoint {
 
     /**
      * Current worker threads busy count.
+     * 正在使用的worker数量
      */
     protected int curThreadsBusy = 0;
 
 
     /**
      * Current worker threads count.
+     * 创建的worker的数量
      */
     protected int curThreads = 0;
 
@@ -171,6 +173,7 @@ public class NioEndpoint {
     
     /**
      * Server socket "pointer".
+     * server Socket
      */
     protected ServerSocketChannel serverSock = null;
     
@@ -365,16 +368,19 @@ public class NioEndpoint {
 
     /**
      * Maximum amount of worker threads.
+     * 最大worker数
      */
     protected int maxThreads = 200;
     public void setMaxThreads(int maxThreads) {
         this.maxThreads = maxThreads;
         if (running) {
             if (getUseExecutor() && executor!=null) {
+            	// 交给ThreadPoolExecutor 代理
                 if (executor instanceof ThreadPoolExecutor) {
                     ((ThreadPoolExecutor)executor).setMaximumPoolSize(maxThreads);
                 }
             }else if (workers!=null){            
+            	// workers  resize (就是弄一个数组 长了.就是null填充. 短了.截取掉)
                 synchronized(workers) {
                     workers.resize(maxThreads);
                 }
@@ -1913,6 +1919,8 @@ public class NioEndpoint {
 
     /**
      * Server processor class.
+     * 
+     * 处说中的worker.  处理socket的类
      */
     protected class Worker implements Runnable {
 
@@ -1929,7 +1937,13 @@ public class NioEndpoint {
          * <b>NOTE</b>:  This method is called from our Connector's thread.  We
          * must assign it to our own thread so that multiple simultaneous
          * requests can be handled.
-         *
+         * 处理从Connector 线程进来的Socket. 
+         * 
+         * 默认情况.available 是false,  所以.分配过来的socket设置到局部变量.  available变成false.
+         * 然后唤醒等待的线程. await.await获得有socket进入. 立即将局部变量的socket交给run()
+         * 然后交handler.process(socket)处理! 所有的执行都是当即返回. 以免主线程阻塞!
+         * 
+
          * @param socket TCP socket to process
          */
         protected synchronized void assign(Object socket) {
@@ -1949,7 +1963,11 @@ public class NioEndpoint {
 
         }
 
-
+        /**
+         * assign  socketChannel  是一种有状态的socket
+         * @param socket
+         * @param status
+         */
         protected synchronized void assign(Object socket, SocketStatus status) {
 
             // Wait for the Processor to get the previous Socket
@@ -1961,6 +1979,7 @@ public class NioEndpoint {
             }
 
             // Store the newly available Socket and notify our thread
+            //存住变量
             this.socket = socket;
             this.status = status;
             available = true;
@@ -1971,6 +1990,12 @@ public class NioEndpoint {
         /**
          * Await a newly assigned Socket from our Connector, or <code>null</code>
          * if we are supposed to shut down.
+         * 
+         *     /**
+         * Await a newly assigned Socket from our Connector, or <code>null</code>
+         * if we are supposed to shut down
+         * 
+         * 等待一个新的分配的socket.
          */
         protected synchronized Object await() {
 
@@ -1995,6 +2020,8 @@ public class NioEndpoint {
         /**
          * The background thread that listens for incoming TCP/IP connections and
          * hands them off to an appropriate processor.
+         * 
+         * 后台线程监听进来的TCP/IP. 并且处理他.
          */
         public void run() {
 
@@ -2007,7 +2034,8 @@ public class NioEndpoint {
                     Object channel = await();
                     if (channel == null)
                         continue;
-
+                    
+                    //分为SocketChannel NioChannel
                     if ( channel instanceof SocketChannel) {
                         SocketChannel sc = (SocketChannel)channel;
                         if ( !setSocketOptions(sc) ) {
@@ -2045,6 +2073,7 @@ public class NioEndpoint {
                     //dereference socket to let GC do its job
                     socket = null;
                     // Finish up this request
+                    //使用完了. 回收.
                     recycleWorkerThread(this);
                 }
             }
@@ -2053,6 +2082,7 @@ public class NioEndpoint {
 
         /**
          * Start the background processing thread.
+         * 启动一个Worker
          */
         public void start() {
             thread = new Thread(this);
@@ -2093,9 +2123,11 @@ public class NioEndpoint {
      * Bare bones interface used for socket processing. Per thread data is to be
      * stored in the ThreadWithAttributes extra folders, or alternately in
      * thread local fields.
+     * 
+     * 处理socket 的接口.每个线程数据保存在ThreadWithAttributes
      */
     public interface Handler {
-        public enum SocketState {
+        public enum SocketState {  // socket状态
             OPEN, CLOSED, LONG
         }
         public SocketState process(NioChannel socket);
@@ -2107,11 +2139,15 @@ public class NioEndpoint {
 
     // ------------------------------------------------- WorkerStack Inner Class
 
-
+    /**
+     * 自己实现的一个队列
+     * @author xiangyang
+     *
+     */
     public class WorkerStack {
 
         protected Worker[] workers = null;
-        protected int end = 0;
+        protected int end = 0;  // 不为null的长度
 
         public WorkerStack(int size) {
             workers = new Worker[size];
@@ -2120,6 +2156,8 @@ public class NioEndpoint {
         /** 
          * Put the object into the queue. If the queue is full (for example if
          * the queue has been reduced in size) the object will be dropped.
+         * 
+         * 把object放入队列.如果队列满的.  object将被丢弃.
          * 
          * @param   object  the object to be appended to the queue (first
          *                  element).
@@ -2135,6 +2173,8 @@ public class NioEndpoint {
         /**
          * Get the first object out of the queue. Return null if the queue
          * is empty. 
+         * 
+         * 返回第一个对象.没有返回null
          */
         public Worker pop() {
             if (end > 0) {
@@ -2160,6 +2200,7 @@ public class NioEndpoint {
 
         /**
          * How many elements are there in this queue?
+         * 
          */
         public int size() {
             return (end);
@@ -2169,6 +2210,7 @@ public class NioEndpoint {
          * Resize the queue. If there are too many objects in the queue for the
          * new size, drop the excess.
          * 
+         * 对workers队列进行长度重组. 如果当前长度大于newSize.  超过的部分被丢弃.
          * @param newSize
          */
         public void resize(int newSize) {
@@ -2278,6 +2320,7 @@ public class NioEndpoint {
                 socket = null;
                 status = null;
                 //return to cache
+                // 放回缓存
                 processorCache.offer(this);
                 NioEndpoint.this.activeSocketProcessors.addAndGet(-1);            }
         }
