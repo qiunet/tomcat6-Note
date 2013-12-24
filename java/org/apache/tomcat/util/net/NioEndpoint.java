@@ -128,24 +128,28 @@ public class NioEndpoint {
 
     /**
      * Available workers.
+     * 自己定义的一个workerstack.  相当于堆栈.
      */
     protected WorkerStack workers = null;
 
 
     /**
      * Running state of the endpoint.
+     * 该endpoint是否运行.
      */
     protected volatile boolean running = false;
 
 
     /**
      * Will be set to true whenever the endpoint is paused.
+     * 是否暂停
      */
     protected volatile boolean paused = false;
 
 
     /**
      * Track the initialization state of the endpoint.
+     * 是否被初始化
      */
     protected boolean initialized = false;
 
@@ -2231,6 +2235,7 @@ public class NioEndpoint {
     /**
      * This class is the equivalent of the Worker, but will simply use in an
      * external Executor thread pool.
+     * 
      */
     protected class SocketProcessor implements Runnable {
 
