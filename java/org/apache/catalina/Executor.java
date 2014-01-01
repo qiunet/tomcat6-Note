@@ -17,7 +17,11 @@
 package org.apache.catalina;
 
 
-
+/**
+ * 执行器接口
+ * @author xiangyang
+ *
+ */
 public interface Executor extends java.util.concurrent.Executor, Lifecycle {
     public String getName();
 }

@@ -24,7 +24,7 @@ import java.util.EventObject;
 
 /**
  * General event for notifying listeners of significant changes on a Session.
- *
+ * 当session有重要更改. 通知监听的事件类.
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -35,24 +35,31 @@ public final class SessionEvent
 
     /**
      * The event data associated with this event.
+     * 
+     * 关联事件数据
      */
     private Object data = null;
 
 
     /**
      * The Session on which this event occurred.
+     * 
+     * 当前发生事件的session
      */
     private Session session = null;
 
 
     /**
      * The event type this instance represents.
+     * 
+     * 事件实例类型
      */
     private String type = null;
 
 
     /**
      * Construct a new SessionEvent with the specified parameters.
+     * 构造一个新的session事件.
      *
      * @param session Session on which this event occurred
      * @param type Event type

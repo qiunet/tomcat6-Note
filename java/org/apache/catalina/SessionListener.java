@@ -23,6 +23,7 @@ package org.apache.catalina;
 
 /**
  * Interface defining a listener for significant Session generated events.
+ *  监听session 事件的一个重要接口
  *
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
@@ -33,7 +34,7 @@ public interface SessionListener {
 
     /**
      * Acknowledge the occurrence of the specified event.
-     *
+     * 告知正发生 的事件
      * @param event SessionEvent that has occurred
      */
     public void sessionEvent(SessionEvent event);

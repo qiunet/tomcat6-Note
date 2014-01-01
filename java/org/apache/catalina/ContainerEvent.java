@@ -24,7 +24,7 @@ import java.util.EventObject;
 
 /**
  * General event for notifying listeners of significant changes on a Container.
- *
+ *  重要更改时.通知监听器.的一个event类
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -35,18 +35,24 @@ public final class ContainerEvent
 
     /**
      * The Container on which this event occurred.
+     * 
+     * 关联事件的 container.
      */
     private Container container = null;
 
 
     /**
      * The event data associated with this event.
+     * 
+     * 关联的数据
      */
     private Object data = null;
 
 
     /**
      * The event type this instance represents.
+     * 
+     * 事件类型
      */
     private String type = null;
 

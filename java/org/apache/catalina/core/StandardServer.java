@@ -56,6 +56,11 @@ import org.apache.tomcat.util.modeler.Registry;
  * (but not required) when deploying and starting Catalina.
  *
  *  实现了server接口,  有效)(非必须)在Catalina 启动并且使用.
+ *  
+ *  启动的配置文件为server.xml!
+ *  
+ *  该类为 server的默认使用类.  通过setServer() 设置到catalina.java 里面.
+ *   
  *
  * @author Craig R. McClanahan
  * @version $Revision: 762911 $ $Date: 2009-04-08 03:15:16 +0800 (Wed, 08 Apr 2009) $
@@ -150,7 +155,7 @@ public final class StandardServer
 
     /**
      * The port number on which we wait for shutdown commands.
-     * 接受 shutdown命令的端口
+     * 接受 shutdown命令的端口 server.xml set
      */
     private int port = 8005;
 
@@ -251,6 +256,8 @@ public final class StandardServer
     /**
      * Set the global naming resources.
      *
+     * 通过server配置.设置的GlobalNamingResources. 是一个NamingResources. 
+     * 
      * @param globalNamingResources The new global naming resources
      */
     public void setGlobalNamingResources

@@ -37,6 +37,8 @@ package org.apache.catalina;
  * to a web server (such as Apache), because the Connector will have
  * utilized the web server's facilities to determine which Context (or
  * perhaps even which Wrapper) should be utilized to process this request.
+ * 
+ *  
  * <p>
  * The child containers attached to an Engine are generally implementations
  * of Host (representing a virtual host) or Context (representing individual

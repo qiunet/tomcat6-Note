@@ -33,9 +33,13 @@ import org.apache.tomcat.util.modeler.Registry;
 
 
 /**
+ * 理论上.如果只有一个context的话. 不需要host.
+ * 
  * Standard implementation of the <b>Host</b> interface.  Each
  * child container must be a Context implementation to process the
  * requests directed to a particular web application.
+ *
+ * 一个host接口的标准实现. 子容器必须实现context. 使用处理请求跳转到特定的web app
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -56,6 +60,8 @@ public class StandardHost
 
     /**
      * Create a new StandardHost component with the default basic Valve.
+     * 
+     * 建一个新的 standardHost, 顺便设置 basicValve
      */
     public StandardHost() {
 
@@ -70,6 +76,8 @@ public class StandardHost
 
     /**
      * The set of aliases for this Host.
+     * 
+     *  host 别名集合
      */
     private String[] aliases = new String[0];
     
@@ -662,16 +670,20 @@ public class StandardHost
     /**
      * Start this host.
      *
+     * 启动组件 
+     *
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents it from being started
      */
     public synchronized void start() throws LifecycleException {
         if( started ) {
             return;
-        }
+        } 
         if( ! initialized )
             init();
-
+        
+        // 判断
+        
         // Look for a realm - that may have been configured earlier. 
         // If the realm is added after context - it'll set itself.
         if( realm == null ) {
@@ -690,6 +702,8 @@ public class StandardHost
         }
             
         // Set error report valve
+        // 如果errorReportValveClass 不是空,  从pipeline 取到 valveName 对比.
+        //没有的话.  添加该valve
         if ((errorReportValveClass != null)
             && (!errorReportValveClass.equals(""))) {
             try {
@@ -752,7 +766,9 @@ public class StandardHost
     }
 
     private boolean initialized=false;
-    
+    /**
+     * 初始化
+     */
     public void init() {
         if( initialized ) return;
         initialized=true;

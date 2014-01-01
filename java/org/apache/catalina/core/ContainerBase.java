@@ -251,9 +251,12 @@ public abstract class ContainerBase
 
     /**
      * Has this component been started?
+     * 该组件是否启动了
      */
     protected boolean started = false;
-
+    /**
+     * 该组件是否初始化了
+     */
     protected boolean initialized=false;
 
     /**

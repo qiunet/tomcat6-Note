@@ -289,6 +289,13 @@ public class NamingResources implements Serializable {
     /**
      * Add a resource reference for this web application.
      *
+     * 通过server.xml 配置文件指定的一个ContextResource
+     * <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+     *
      * @param resource New resource reference
      */
     public void addResource(ContextResource resource) {

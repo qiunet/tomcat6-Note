@@ -175,7 +175,7 @@ public class Catalina extends Embedded {
      * @param server The new server
      */
     public void setServer(Server server) {
-
+    	
         this.server = server;
 
     }
@@ -312,7 +312,8 @@ public class Catalina extends Embedded {
         digester.addSetProperties("Server");
         
         
-        // 通过setServer添加到上一级标签
+        // 通过setServer添加到上一级标签  这个地方就是后面的push 的this, 即root.
+        //
         digester.addSetNext("Server",
                             "setServer",
                             "org.apache.catalina.Server"); //最后一个标签表示参数类型
@@ -559,7 +560,14 @@ public class Catalina extends Embedded {
 
         try {
             inputSource.setByteStream(inputStream);
-            digester.push(this);
+            /**
+             * 这个地方是最重要的.  将Catalina 设置为digester的最上端.
+             * 
+             * 在createStartDigeter()时候.  调用了setServer().  所以各个地方都做好了关联. 
+             * 
+             * 
+             */
+            digester.push(this);   
             digester.parse(inputSource);
             inputStream.close();
         } catch (Exception e) {
