@@ -1,6 +1,6 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
+ * Licensed to the Apache Software Foundation (ASF) under one or more
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
@@ -43,6 +43,8 @@ import org.xml.sax.InputSource;
 
 /**
  * Catalina->Server->Service->容器/连接器/日志器
+ * 
+ * catalina 是tomcat的核心类.  tomcat启动 和  stop是通过该类实现.  strapup类是通过 通过操作该类.实现启动的配置.
  * 
  * Startup/Shutdown shell program for Catalina.  The following command line
  * options are recognized:
@@ -92,21 +94,21 @@ public class Catalina extends Embedded {
 
     /**
      * The server component we are starting or stopping
-     * server 组件
+     * server 组件 (通过digester setServer() 得到实例.  以及其子类实例 等 所有的一切都是通过digester 解析配置文件server.xml 得到)
      */
     protected Server server = null;
 
 
     /**
      * Are we starting a new server?
-     * 是否启动一个新server
+     * 是否在启动一个新的server
      */
     protected boolean starting = false;
 
 
     /**
      * Are we stopping an existing server?
-     * 是否停止一个存在的server
+     * 是否正在停止一个存在的server
      */
     protected boolean stopping = false;
 
@@ -123,14 +125,14 @@ public class Catalina extends Embedded {
 
     /**
      * Shutdown hook.
-     * shutdown钩子 实例引用
+     * shutdown钩子 实例引用 .就是一个thread.
      */
     protected Thread shutdownHook = null;
 
 
     // ------------------------------------------------------------- Properties
 
-
+    /*设置配置文件*/
     public void setConfig(String file) {
         configFile = file;
     }
@@ -140,12 +142,12 @@ public class Catalina extends Embedded {
         configFile = file;
     }
 
-
+    /*得到配置文件*/
     public String getConfigFile() {
         return configFile;
     }
 
-
+  
     public void setUseShutdownHook(boolean useShutdownHook) {
         this.useShutdownHook = useShutdownHook;
     }
@@ -171,6 +173,7 @@ public class Catalina extends Embedded {
 
     /**
      * Set the server instance we are configuring.
+     *
      *
      * @param server The new server
      */
@@ -582,6 +585,7 @@ public class Catalina extends Embedded {
         // Start the new server
         if (server instanceof Lifecycle) {
             try {
+            	/*初始化各个组件  会调用子类组件的initialize方法 */
                 server.initialize();
             } catch (LifecycleException e) {
                 log.error("Catalina.start", e);
@@ -625,7 +629,7 @@ public class Catalina extends Embedded {
      * 启动 server实例
      */
     public void start() {
-
+    	// 判断.  如果没有server 就load . 
         if (server == null) {
             load();
         }

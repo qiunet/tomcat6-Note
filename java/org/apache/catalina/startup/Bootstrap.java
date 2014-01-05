@@ -46,6 +46,10 @@ import org.apache.juli.logging.LogFactory;
  *
  *  Bootstrap 是为Catalina加载, 这个构造一个classloader 加载Catalina 内部类(${catalina.home} server文件夹下的jar ),
  *  启动  container 容器, 
+ *  
+ *  tomcat 是一个serverSocket,  在一个connector thread里面.  使用serversocket,  获得socket对象后.  使用container处理.
+ *  container 本身也是thread.  归由container的一个stack 维护 以及回收(recycle).  container 负责socket的解析  . 响应.
+ *  具体的工作内容一层层的下发到servlet  处理.然后经过servletresponse 响应出去.  是通过socket的outputstream 进行的
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -69,7 +73,7 @@ public final class Bootstrap {
     /**
      * Daemon object used by main.
      * 
-     * 在main方法中. 本类的一个引用
+     * 在main方法中. 本类的一个实例引用
      */
     private static Bootstrap daemon = null;
 
@@ -232,12 +236,11 @@ public final class Bootstrap {
 
         SecurityClassLoad.securityClassLoad(catalinaLoader);
         
+        // Load our startup class and call its process() method
         /*
          * 得到org.apache.catalina.startup.Catalina 这个类实例,
          *   调用setParentClassLoader方法
          */
-        
-        // Load our startup class and call its process() method
         if (log.isDebugEnabled())
             log.debug("Loading startup class");
         Class startupClass =
@@ -257,7 +260,10 @@ public final class Bootstrap {
         Method method =
             startupInstance.getClass().getMethod(methodName, paramTypes);
         method.invoke(startupInstance, paramValues);
-
+        /**
+         * 得到catalina的实例. 通过 catalinaLoader.loadClass
+            ("org.apache.catalina.startup.Catalina"); 得到的实例.  然后.调用了setParentClassLoader.  将setParentClassLoader set
+         */
         catalinaDaemon = startupInstance;
 
     }
@@ -273,6 +279,7 @@ public final class Bootstrap {
 
         // Call the load() method
     	// 反射调用Catalina.load()方法
+    	// 最后初始化各个组件
         String methodName = "load";
         Object param[];
         Class paramTypes[];
@@ -305,6 +312,7 @@ public final class Bootstrap {
         throws Exception {
 
         init();
+       /*将 main的 参数给传入.  然后load .load调用的是catalina.java的load*/
         load(arguments);
 
     }
@@ -317,7 +325,7 @@ public final class Bootstrap {
     public void start()
         throws Exception {
         if( catalinaDaemon==null ) init();
-        /*调用Catalina 的start类*/
+        /*调用Catalina 的start方法*/
         Method method = catalinaDaemon.getClass().getMethod("start", (Class [] )null);
         method.invoke(catalinaDaemon, (Object [])null);
 
@@ -326,7 +334,7 @@ public final class Bootstrap {
 
     /**
      * Stop the Catalina Daemon.
-     * 停止Catalina线程
+     * 停止Catalina线程 调用的是stop方法
      */
     public void stop()
         throws Exception {
@@ -434,6 +442,10 @@ public final class Bootstrap {
         if (daemon == null) {
             daemon = new Bootstrap();
             try {
+            	/**
+            	 * 初始化 . Catalina的一些东西.  包括 Catalina.home  catalina.base 环境变量的设置.
+            	 * 
+            	 */
                 daemon.init();
             } catch (Throwable t) {
                 t.printStackTrace();
@@ -456,7 +468,17 @@ public final class Bootstrap {
                 daemon.stop();
             } else if (command.equals("start")) {
                 daemon.setAwait(true);
+                /** 
+                 * 调用的catalina.java的load()
+                 * 使用digester 加载 server.xml 获得对象树(不知道这样描述可以理解不.  就是server -> service -> engine -> host -> context -> wrapper ) . 每个都是父类组件包含一个子类组件的数组.
+                 * 并且将他们初始化 
+                 * 
+                 */
                 daemon.load(args);
+                /***
+                 * 调用Catalina的start.  启动server, server负责启动子类组件数组 .  
+                 * 子类复启动子类.  达到tomcat的运行.
+                 */
                 daemon.start();
             } else if (command.equals("stop")) {
                 daemon.stopServer(args);
