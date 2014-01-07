@@ -21,14 +21,16 @@ package org.apache.catalina.startup;
 
 /**
  * String constants for the startup package.
- *
+ * 
+ * 启动包里面的一些需要的常量string\
+ * 
  * @author Craig R. McClanahan
  * @author Jean-Francois Arcand
  * @version $Revision: 535038 $ $Date: 2007-05-04 08:19:56 +0800 (Fri, 04 May 2007) $
  */
 
 public final class Constants {
-
+	
     public static final String Package = "org.apache.catalina.startup";
 
     public static final String ApplicationContextXml = "META-INF/context.xml";

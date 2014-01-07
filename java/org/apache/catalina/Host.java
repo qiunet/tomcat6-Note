@@ -39,6 +39,14 @@ package org.apache.catalina;
  * <p>
  * The child containers attached to a Host are generally implementations
  * of Context (representing an individual servlet context).
+ * 
+ * host是一个container, 是engine中的虚拟的主机.
+ * 通常在下列情况使用:
+ * 1 想知道每个请求在host中是怎么处理的
+ * 2. 希望支持多个虚拟主机处理请求
+ * 
+ * 通常. 一个web server时候.并不需要host, 
+ * 因为connect知道将请求给那个context..
  *
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
@@ -52,6 +60,7 @@ public interface Host extends Container {
 
     /**
      * The ContainerEvent event type sent when a new alias is added
+     * 容器别名添加事件
      * by <code>addAlias()</code>.
      */
     public static final String ADD_ALIAS_EVENT = "addAlias";
@@ -60,6 +69,7 @@ public interface Host extends Container {
     /**
      * The ContainerEvent event type sent when an old alias is removed
      * by <code>removeAlias()</code>.
+     * 去除别名的事件
      */
     public static final String REMOVE_ALIAS_EVENT = "removeAlias";
 
@@ -70,6 +80,7 @@ public interface Host extends Container {
     /**
      * Return the application root for this Host.  This can be an absolute
      * pathname, a relative pathname, or a URL.
+     * 返回一个app的root目录 .  可能是绝对路径.  也可能是一个相对路径 或者一个url
      */
     public String getAppBase();
 
@@ -102,6 +113,7 @@ public interface Host extends Container {
     /**
      * Return the Java class name of the context configuration class
      * for new web applications.
+     * 返回配置类的name
      */
     public String getConfigClass();
 
@@ -168,6 +180,8 @@ public interface Host extends Container {
     /**
      * Set the validation feature of the XML parser used when
      * parsing xml instances.
+     * 
+     * 设置是否校验xml.
      * @param xmlValidation true to enable xml instance validation
      */
     public void setXmlValidation(boolean xmlValidation);
@@ -202,7 +216,7 @@ public interface Host extends Container {
     /**
      * Return the Context that would be used to process the specified
      * host-relative request URI, if any; otherwise return <code>null</code>.
-     *
+     * 根据 url返回一个context处理业务.
      * @param uri Request URI to be mapped
      */
     public Context map(String uri);
@@ -210,7 +224,7 @@ public interface Host extends Container {
 
     /**
      * Remove the specified alias name from the aliases for this Host.
-     *
+     *删除一个别名
      * @param alias Alias name to be removed
      */
     public void removeAlias(String alias);
