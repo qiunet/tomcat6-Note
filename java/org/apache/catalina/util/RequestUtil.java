@@ -27,6 +27,7 @@ import java.util.TimeZone;
 /**
  * General purpose request parsing and encoding utility methods.
  *
+ * request 解析  和  字符转换的一个工具类
  * @author Craig R. McClanahan
  * @author Tim Tye
  * @version $Revision: 739532 $ $Date: 2009-01-31 17:52:13 +0800 (Sat, 31 Jan 2009) $
@@ -50,7 +51,7 @@ public final class RequestUtil {
      * Filter the specified message string for characters that are sensitive
      * in HTML.  This avoids potential attacks caused by including JavaScript
      * codes in the request URL that is often reported in error messages.
-     *
+     * 过滤html中一些指定的 char.  避免受到潜在的危险. 
      * @param message The message string to be filtered
      */
     public static String filter(String message) {

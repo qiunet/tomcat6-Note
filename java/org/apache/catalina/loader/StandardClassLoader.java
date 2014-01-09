@@ -25,6 +25,8 @@ import java.net.URLClassLoader;
  * Subclass implementation of <b>java.net.URLClassLoader</b>. There are no
  * functional differences between this class and <b>java.net.URLClassLoader</b>.
  *
+ * java.net.URLClassLoader 子类. , 和java.net.URLClassLoader没有差异.?
+ *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @version $Revision: 476989 $ $Date: 2006-11-20 08:13:26 +0800 (Mon, 20 Nov 2006) $

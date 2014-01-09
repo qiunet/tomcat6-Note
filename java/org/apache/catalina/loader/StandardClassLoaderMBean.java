@@ -20,7 +20,7 @@ package org.apache.catalina.loader;
 
 /**
  * MBean interface for StandardClassLoader, to allow JMX remote management.
- *
+ *StandardClassLoader的MBean接口,  可以允许jmx 远程管理.
  * @author Remy Maucherat
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */

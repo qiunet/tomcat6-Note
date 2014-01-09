@@ -31,6 +31,8 @@ import java.util.Properties;
  *
  *	读取程序引导需要的catalina 配置 的一个工具类
  *
+ *在bootStrap 的createClassLoader中. 用来创建加载器 的一些信息.
+ *
  * @author Remy Maucherat
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -47,7 +49,9 @@ public class CatalinaProperties {
 
 
     static {
-
+    	/**
+    	 * 类被加载时候. 就调用方法.  填充 properties
+    	 */
         loadProperties();
 
     }
@@ -58,6 +62,7 @@ public class CatalinaProperties {
 
     /**
      * Return specified property value.
+     * 返回指定的属性值.
      */
     public static String getProperty(String name) {
 	
@@ -178,7 +183,7 @@ public class CatalinaProperties {
     /**
      * Get the value of the configuration URL
      * 
-     * 从配置文件systemprops.xml 读取URL.
+     *  
      */
     private static String getConfigUrl() {
         return System.getProperty("catalina.config");

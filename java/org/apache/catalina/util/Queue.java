@@ -22,6 +22,14 @@ import java.util.Vector;
  * A simple FIFO queue class which causes the calling thread to wait
  * if the queue is empty and notifies threads that are waiting when it
  * is not empty.
+ * 
+ * 一个简单的(FIFO  先入先出)队列.  .  如果队列是空.  wait . 否则notify  
+ * 
+ * 内部封装了一个vector,  使用大致和vector差不多.  
+ * 
+ * 不同点是 put时候. notify().  pull 时候.  判断如果是empty.  就wait()
+ *  
+ * 看方法名称.能看出来.就不标注了.
  *
  * @author Anil V (akv@eng.sun.com)
  */

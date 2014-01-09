@@ -30,6 +30,12 @@ import java.util.Map;
  * to clone them in order to avoid modifications.  When first created, a
  * <code>ParmaeterMap</code> instance is not locked.
  *
+ *
+ * 实现了hashmap.  我们的getParameter() 使用的就是这个map.  为了防止改动.
+ * 当成员变量locked为 true的时候. 写如操作将被拒绝.
+ * 
+ * 其他用法跟map一样
+ * 
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
