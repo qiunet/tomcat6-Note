@@ -61,10 +61,16 @@ import org.apache.tomcat.util.modeler.Registry;
 
 
 /**
+ * 该类实现了Container接口, 所有实现Container的类会继承该类. 是一个处理Container通用功能的类.
+ * 为了统一管理这些子类Container. 然后启动. 增删等等. 以及事件的处理.  
+ * 子类COntainer会保存在children map中. 使用的是name -> Container的关系.
+ * 
  * Abstract implementation of the <b>Container</b> interface, providing common
  * functionality required by nearly every implementation.  Classes extending
  * this base class must implement <code>getInfo()</code>, and may implement
  * a replacement for <code>invoke()</code>.
+ * 
+ * 实现了 container 接口, 为其实现类提供通用的功能. 子类需要实现getInfo()  方法.  覆盖实现invoke()
  * <p>
  * All subclasses of this abstract base class will include support for a
  * Pipeline object that defines the processing to be performed for each request
@@ -72,6 +78,10 @@ import org.apache.tomcat.util.modeler.Registry;
  * "Chain of Responsibility" design pattern.  A subclass should encapsulate its
  * own processing functionality as a <code>Valve</code>, and configure this
  * Valve into the pipeline by calling <code>setBasic()</code>.
+	
+	所有子类定义一个pipeline对象(责任链模式模式).执行invoke方法过来的请求. 
+	子类应该把处理的功能封装成valve. 并调用setBasic() 配置到pipeline.
+	
  * <p>
  * This implementation fires property change events, per the JavaBeans design
  * pattern, for changes in singleton properties.  In addition, it fires the
@@ -781,7 +791,11 @@ public abstract class ContainerBase
             addChildInternal(child);
         }
     }
-
+    /**
+     * 在children Map中. 如果存在.就抛出异常. 否则. 为child设置父类. 然后put进Map.
+     * 判断: children启动了 而且child是具有生命周期的组件  那么直接启动. 
+     * @param child
+     */
     private void addChildInternal(Container child) {
 
         if( log.isDebugEnabled() )
@@ -847,6 +861,7 @@ public abstract class ContainerBase
      * Return the child Container, associated with this Container, with
      * the specified name (if any); otherwise, return <code>null</code>
      *
+     * 查找name在children Map 里面查找. 没有返回null
      * @param name Name of the child Container to be retrieved
      */
     public Container findChild(String name) {
@@ -863,6 +878,8 @@ public abstract class ContainerBase
     /**
      * Return the set of children Containers associated with this Container.
      * If this Container has no children, a zero-length array is returned.
+     * 
+     * 返回map的values().
      */
     public Container[] findChildren() {
 
@@ -1014,7 +1031,7 @@ public abstract class ContainerBase
 
     /**
      * Prepare for active use of the public methods of this Component.
-     *
+     * 其实我认为这个方法是这个Container类的真正目的. 为了统一管理这些子类Container. 然后启动. 增删等.
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents it from being started
      */
