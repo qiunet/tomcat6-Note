@@ -164,6 +164,8 @@ public abstract class ContainerBase
 
     /**
      * The child Containers belonging to this Container, keyed by name.
+     * 
+     * 子容器的一个map. 
      */
     protected HashMap children = new HashMap();
 
@@ -176,12 +178,14 @@ public abstract class ContainerBase
 
     /**
      * The lifecycle event support for this component.
+     * 生命周期支持的组件
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
 
     /**
      * The container event listeners for this Container.
+     * 
      */
     protected ArrayList listeners = new ArrayList();
 
@@ -911,7 +915,7 @@ public abstract class ContainerBase
      * Process the specified Request, to produce the corresponding Response,
      * by invoking the first Valve in our pipeline (if any), or the basic
      * Valve otherwise.
-     *
+     *  处理指定的请求,      调用 pileline 里第一个 valve  或者   basic valve 做出响应.
      * @param request Request to be processed
      * @param response Response to be produced
      *
@@ -933,7 +937,7 @@ public abstract class ContainerBase
     /**
      * Remove an existing child Container from association with this parent
      * Container.
-     *
+     * 删除一个指定的子容器
      * @param child Existing child Container to be removed
      */
     public void removeChild(Container child) {
@@ -943,7 +947,7 @@ public abstract class ContainerBase
                 return;
             children.remove(child.getName());
         }
-        
+        // 如果已经启动.  并且子容器实现了 生命周期. (LifeCycle) . 调用stop()
         if (started && (child instanceof Lifecycle)) {
             try {
                 if( child instanceof ContainerBase ) {
@@ -957,7 +961,7 @@ public abstract class ContainerBase
                 log.error("ContainerBase.removeChild: stop: ", e);
             }
         }
-        
+        // 事件处理.
         fireContainerEvent(REMOVE_CHILD_EVENT, child);
         
         // child.setParent(null);
@@ -967,7 +971,7 @@ public abstract class ContainerBase
 
     /**
      * Remove a container event listener from this component.
-     *
+     * 删除某个监听
      * @param listener The listener to remove
      */
     public void removeContainerListener(ContainerListener listener) {
@@ -1009,6 +1013,8 @@ public abstract class ContainerBase
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this 
      * Lifecycle has no listeners registered, a zero-length array is returned.
+     * 
+     * 返回生命周期监听数组.
      */
     public LifecycleListener[] findLifecycleListeners() {
 
@@ -1019,7 +1025,9 @@ public abstract class ContainerBase
 
     /**
      * Remove a lifecycle event listener from this component.
-     *
+     * 
+     * 
+     * 删除指定的 生命周期监听.
      * @param listener The listener to remove
      */
     public void removeLifecycleListener(LifecycleListener listener) {

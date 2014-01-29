@@ -92,6 +92,7 @@ public class StandardHost
 
     /**
      * The auto deploy flag for this Host.
+     * deploy 施展 部署
      */
     private boolean autoDeploy = true;
 
@@ -107,6 +108,8 @@ public class StandardHost
     /**
      * The Java class name of the default Context implementation class for
      * deployed web applications.
+     * 
+     * 默认的context类名.
      */
     private String contextClass =
         "org.apache.catalina.core.StandardContext";
@@ -114,6 +117,7 @@ public class StandardHost
 
     /**
      * The deploy on startup flag for this Host.
+     * 是否启动
      */
     private boolean deployOnStartup = true;
 
@@ -127,6 +131,8 @@ public class StandardHost
     /**
      * The Java class name of the default error reporter implementation class 
      * for deployed web applications.
+     * 
+     * 错误报告的 阀 类名.
      */
     private String errorReportValveClass =
         "org.apache.catalina.valves.ErrorReportValve";
@@ -138,6 +144,8 @@ public class StandardHost
 
     /**
      * The descriptive information string for this implementation.
+     * 
+     * 该类的描述
      */
     private static final String info =
         "org.apache.catalina.core.StandardHost/1.0";
@@ -151,18 +159,22 @@ public class StandardHost
 
     /**
      * Unpack WARs property.
+     * 
+     * 是否自动解压 war包.
      */
     private boolean unpackWARs = true;
 
 
     /**
      * Work Directory base for applications.
+     * 工作目录
      */
     private String workDir = null;
 
 
     /**
      * Attribute value used to turn on/off XML validation
+     * 是否校验xml
      */
      private boolean xmlValidation = false;
 
@@ -179,6 +191,8 @@ public class StandardHost
     /**
      * Return the application root for this Host.  This can be an absolute
      * pathname, a relative pathname, or a URL.
+     * 
+     * 返回应用的根目录.   可以是绝对路径  相对路径.  和 url
      */
     public String getAppBase() {
 
@@ -205,6 +219,8 @@ public class StandardHost
     /**
      * Return the value of the auto deploy flag.  If true, it indicates that 
      * this host's child webapps will be dynamically deployed.
+     * 
+     * 是否自动部署
      */
     public boolean getAutoDeploy() {
 
@@ -231,6 +247,8 @@ public class StandardHost
     /**
      * Return the Java class name of the context configuration class
      * for new web applications.
+     * 
+     * 返回context的配置类.
      */
     public String getConfigClass() {
 
@@ -284,8 +302,10 @@ public class StandardHost
 
     /**
      * Return the value of the deploy on startup flag.  If true, it indicates 
-     * that this host's child webapps should be discovred and automatically 
+     * that this host's child webapps should be discovred(碰见 撞见 了解到..) and automatically 
      * deployed at startup time.
+     * 
+     * 返回一个值 . 是否在启动的时候部署.  如果是true,  启动的时候,   host的子容器被自动部署 
      */
     public boolean getDeployOnStartup() {
 
@@ -366,6 +386,7 @@ public class StandardHost
      * Set the Java class name of the error report valve class
      * for new web applications.
      *
+     * 设置 新的错误报告阀 类.  参数为string 的类名
      * @param errorReportValveClass The new error report valve class
      */
     public void setErrorReportValveClass(String errorReportValveClass) {
@@ -393,7 +414,7 @@ public class StandardHost
     /**
      * Set the canonical, fully qualified, name of the virtual host
      * this Container represents.
-     *
+     * 设置虚拟主机名称
      * @param name Virtual host name
      *
      * @exception IllegalArgumentException if name is null
@@ -415,6 +436,8 @@ public class StandardHost
 
     /**
      * Unpack WARs flag accessor.
+     * 
+     * 判断是否 自动解压.
      */
     public boolean isUnpackWARs() {
 
@@ -435,6 +458,8 @@ public class StandardHost
      /**
      * Set the validation feature of the XML parser used when
      * parsing xml instances.
+     * 
+     * 设置  一个值. 表示xml解析的时候.是否校验xml
      * @param xmlValidation true to enable xml instance validation
      */
     public void setXmlValidation(boolean xmlValidation){
@@ -473,6 +498,7 @@ public class StandardHost
     
     /**
      * Host work directory base.
+     * 工作根目录
      */
     public String getWorkDir() {
 
@@ -482,6 +508,7 @@ public class StandardHost
 
     /**
      * Host work directory base.
+     * 设置工作的根目录
      */
     public void setWorkDir(String workDir) {
 
@@ -494,7 +521,7 @@ public class StandardHost
 
     /**
      * Add an alias name that should be mapped to this same Host.
-     *
+     * 为该host添加一个别名.  
      * @param alias The alias to be added
      */
     public void addAlias(String alias) {
@@ -523,7 +550,7 @@ public class StandardHost
     /**
      * Add a child Container, only if the proposed child is an implementation
      * of Context.
-     *
+     * 添加一个 child容器.     仅可以是实现了 context的.
      * @param child Child container to be added
      */
     public void addChild(Container child) {
@@ -539,6 +566,8 @@ public class StandardHost
     /**
      * Return the set of alias names for this Host.  If none are defined,
      * a zero length array is returned.
+     * 
+     * 返回一个别名集合. 如果没有定义的话.  返回空数组.  
      */
     public String[] findAliases() {
 
@@ -553,6 +582,8 @@ public class StandardHost
      * Return descriptive information about this Container implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
+     * 
+     * 返回 info 
      */
     public String getInfo() {
 
@@ -565,6 +596,9 @@ public class StandardHost
      * Return the Context that would be used to process the specified
      * host-relative request URI, if any; otherwise return <code>null</code>.
      *
+     *
+     * 返回context处理指定的虚拟主机路径的uri.  如果没有. return null
+     * 
      * @param uri Request URI to be mapped
      */
     public Context map(String uri) {
@@ -575,14 +609,17 @@ public class StandardHost
             return (null);
 
         // Match on the longest possible context path prefix
+        // 尽可能长的匹配 context 前缀.
         if (log.isTraceEnabled())
             log.trace("  Trying the longest context path prefix");
         Context context = null;
         String mapuri = uri;
         while (true) {
+        	// 先直接找. 
             context = (Context) findChild(mapuri);
             if (context != null)
                 break;
+            // 然后.找到uri的最后一个/  并且分割. 
             int slash = mapuri.lastIndexOf('/');
             if (slash < 0)
                 break;
@@ -590,13 +627,15 @@ public class StandardHost
         }
 
         // If no Context matches, select the default Context
+        //选择默认的context
         if (context == null) {
             if (log.isTraceEnabled())
                 log.trace("  Trying the default context");
             context = (Context) findChild("");
         }
 
-        // Complain if no Context has been selected
+        // Complain(发牢骚 控诉) if no Context has been selected
+        // 没有context 返回null
         if (context == null) {
             log.error(sm.getString("standardHost.mappingError", uri));
             return (null);
@@ -612,7 +651,7 @@ public class StandardHost
 
     /**
      * Remove the specified alias name from the aliases for this Host.
-     *
+     * 删除一个指定的别名
      * @param alias Alias name to be removed
      */
     public void removeAlias(String alias) {
