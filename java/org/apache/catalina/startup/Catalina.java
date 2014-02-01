@@ -609,7 +609,9 @@ public class Catalina extends Embedded {
     public void load(String args[]) {
 
         try {
+        	// 判断参数的合法性
             if (arguments(args))
+            	// load . 准备digester.
                 load();
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -638,6 +640,7 @@ public class Catalina extends Embedded {
         
         // Start the new server
         if (server instanceof Lifecycle) {
+        	// 启动最上层的container.  之后, 由父类启动子类
             try {
                 ((Lifecycle) server).start();
             } catch (LifecycleException e) {
@@ -651,6 +654,7 @@ public class Catalina extends Embedded {
 
         try {
             // Register shutdown hook
+        	// 注册钩子
             if (useShutdownHook) {
                 if (shutdownHook == null) {
                     shutdownHook = new CatalinaShutdownHook();
@@ -681,7 +685,7 @@ public class Catalina extends Embedded {
             // doesn't get invoked twice
             if (useShutdownHook) {
             	
-            	// JDK 里面的方法. 没明白干嘛的
+            	// 如果有钩子使用, 调用stop方法后,  删除钩子,  不重复调用
                 Runtime.getRuntime().removeShutdownHook(shutdownHook);
             }
         } catch (Throwable t) {
@@ -735,11 +739,13 @@ public class Catalina extends Embedded {
     // XXX Should be moved to embedded !
     /**
      * Shutdown hook which will perform a clean shutdown of Catalina if needed.
+     * 
+     * catalina 的关闭钩子
      */
     protected class CatalinaShutdownHook extends Thread {
 
         public void run() {
-
+        	// 没有被关闭的时候   .   调用stop
             if (server != null) {
                 Catalina.this.stop();
             }

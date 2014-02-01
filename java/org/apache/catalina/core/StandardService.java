@@ -47,7 +47,8 @@ import org.apache.catalina.Executor;
  * associated Container is generally an instance of Engine, but this is
  * not required.
  * 
- * service 接口的标准实现.  关联的容器通常是engine,  但是不是必需的
+ * service 接口的标准实现.  关联的container 通常是engine, 
+ * 可以添加一个container,  和 多个connector. (HttpConnector  aprConnector(tomcat 4 5里面有))
  *  
  *
  * @author Craig R. McClanahan
@@ -112,7 +113,7 @@ public class StandardService
 
     /**
      * The set of Connectors associated with this Service.
-     * 关联该service的connectors 集合
+     * 关联该service的connectors 集合  
      */
     protected Connector connectors[] = new Connector[0];
     

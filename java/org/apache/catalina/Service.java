@@ -30,7 +30,9 @@ import org.apache.catalina.connector.Connector;
  * completely independent of each other and share only the basic JVM facilities
  * and classes on the system class path.
  * 
- * 一个service是一个 或者 多个Connectors 和一个Container 处理他们接收到的请求. 
+ * 一个service可以管理一个或者 多个Connectors 和一个Container 处理他们接收到的请求.
+ * 多个connector 可以分别处理 http https  ssl等的请求,  
+ * 
  * 
  * 一个指定的jvm可以包含任意数量的service实例.  他们完整但不依赖其他实例.
  *   仅仅共享一个基本的jvm设备和classpath路径的classes.
@@ -56,6 +58,7 @@ public interface Service {
      * Set the <code>Container</code> that handles requests for all
      * <code>Connectors</code> associated with this Service.
      *
+     *设置关联的container.
      *
      * @param container The new Container
      */
@@ -65,11 +68,15 @@ public interface Service {
      * Return descriptive information about this Service implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
+     * 
+     * 得到信息
      */
     public String getInfo();
 
     /**
      * Return the name of this Service.
+     * 
+     * 得到name属性
      */
     public String getName();
 
@@ -83,11 +90,15 @@ public interface Service {
 
     /**
      * Return the <code>Server</code> with which we are associated (if any).
+     * 
+     * 返回关联的 上一级 server
      */
     public Server getServer();
 
     /**
      * Set the <code>Server</code> with which we are associated (if any).
+     *
+     *设置 上一级 server
      *
      * @param server The server that owns this Service
      */
@@ -108,6 +119,8 @@ public interface Service {
 
     /**
      * Find and return the set of Connectors associated with this Service.
+     * 
+     * 返回所有关联的connector
      */
     public Connector[] findConnectors();
 
@@ -124,6 +137,8 @@ public interface Service {
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
+     *
+     * 启动前的初始化, 
      *
      * @exception LifecycleException If this server was already initialized.
      */
