@@ -690,6 +690,7 @@ public class StandardHost
 
     /**
      * Return a String representation of this component.
+     * 
      */
     public String toString() {
 

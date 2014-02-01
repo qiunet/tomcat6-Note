@@ -1238,6 +1238,10 @@ public abstract class ContainerBase
      * be associated with this Container, or <code>IllegalStateException</code>
      * if it is already associated with a different Container.
      *
+     * 添加一个valve 到 pileline 尾端. 添加之前, 需要调用 setContainer 方法. 可能抛出异常.  
+     * IllegalStateException 表示 已经关联其他 container .
+     * IllegalArgumentException 表示 关联的container 不被支持.
+     *
      * @param valve Valve to be added
      *
      * @exception IllegalArgumentException if this Container refused to
@@ -1260,6 +1264,8 @@ public abstract class ContainerBase
     /**
      * <p>Return the Valve instance that has been distinguished as the basic
      * Valve for this Pipeline (if any).
+     * 
+     * 返回basic valve
      */
     public Valve getBasic() {
 
@@ -1270,6 +1276,8 @@ public abstract class ContainerBase
 
     /**
      * Return the first valve in the pipeline.
+     * 
+     * 返回pileline 的第一个valve
      */
     public Valve getFirst() {
 
@@ -1282,6 +1290,8 @@ public abstract class ContainerBase
      * Return the set of Valves in the pipeline associated with this
      * Container, including the basic Valve (if any).  If there are no
      * such Valves, a zero-length array is returned.
+     * 
+     * 返回 valve 集合. 
      */
     public Valve[] getValves() {
 
@@ -1293,7 +1303,9 @@ public abstract class ContainerBase
     /**
      * Remove the specified Valve from the pipeline associated with this
      * Container, if it is found; otherwise, do nothing.
-     *
+     * 
+     * 删除 指定的 valve . 
+     * 
      * @param valve Valve to be removed
      */
     public synchronized void removeValve(Valve valve) {
@@ -1312,6 +1324,8 @@ public abstract class ContainerBase
      * if this Valve chooses not to be associated with this Container, or
      * <code>IllegalStateException</code> if it is already associated with
      * a different Container.</p>
+     * 
+     * 设置basic valve,  
      *
      * @param valve Valve to be distinguished as the basic Valve
      */
