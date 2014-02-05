@@ -75,13 +75,14 @@ public interface Loader {
 
     /**
      * Return the Container with which this Loader has been associated.
+     * 得到关联的container
      */
     public Container getContainer();
 
 
     /**
      * Set the Container with which this Loader has been associated.
-     *
+     * 设置与之关联的 container.
      * @param container The associated Container
      */
     public void setContainer(Container container);
@@ -90,6 +91,7 @@ public interface Loader {
     /**
      * Return the "follow standard delegation model" flag used to configure
      * our ClassLoader.
+     * 返回是否委托 父类加载器
      */
     public boolean getDelegate();
 
@@ -97,6 +99,8 @@ public interface Loader {
     /**
      * Set the "follow standard delegation model" flag used to configure
      * our ClassLoader.
+     * 
+     * 是否委托父类加载器
      *
      * @param delegate The new flag
      */
@@ -113,6 +117,7 @@ public interface Loader {
 
     /**
      * Return the reloadable flag for this Loader.
+     * 返回自动重载的标志.
      */
     public boolean getReloadable();
 

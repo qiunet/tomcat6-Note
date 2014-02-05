@@ -172,6 +172,7 @@ public abstract class ContainerBase
 
     /**
      * The processor delay for this component.
+     *  线程处理backgroundProcess()间隔.
      */
     protected int backgroundProcessorDelay = -1;
 
@@ -1340,6 +1341,9 @@ public abstract class ContainerBase
      * Execute a periodic task, such as reloading, etc. This method will be
      * invoked inside the classloading context of this container. Unexpected
      * throwables will be caught and logged.
+     * 
+     * 周期性的执行一个任务.  例如:  重新加载.  
+     * 做多个任务的处理.
      */
     public void backgroundProcess() {
         
@@ -1354,6 +1358,7 @@ public abstract class ContainerBase
             }
         }
         if (loader != null) {
+        	// loader的 后台处理.!  重新加载.
             try {
                 loader.backgroundProcess();
             } catch (Exception e) {
@@ -1619,6 +1624,8 @@ public abstract class ContainerBase
     /**
      * Private thread class to invoke the backgroundProcess method 
      * of this container and its children after a fixed delay.
+     * 
+     * 分出来一个私有的线程类.  处理 backgroundProcess() 方法. 
      */
     protected class ContainerBackgroundProcessor implements Runnable {
 

@@ -128,6 +128,7 @@ public class WebappLoader
 
     /**
      * The Container with which this Loader has been associated.
+     * 关联的 container
      */
     private Container container = null;
 
@@ -135,12 +136,14 @@ public class WebappLoader
     /**
      * The "follow standard delegation model" flag that will be used to
      * configure our ClassLoader.
+     * 是否委托 父类加载器
      */
     private boolean delegate = false;
 
 
     /**
      * The descriptive information about this Loader implementation.
+     * loader的描述
      */
     private static final String info =
         "org.apache.catalina.loader.WebappLoader/1.0";
@@ -148,6 +151,7 @@ public class WebappLoader
 
     /**
      * The lifecycle event support for this component.
+     * 生命周期支持组件
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
@@ -156,6 +160,8 @@ public class WebappLoader
      * The Java class name of the ClassLoader implementation to be used.
      * This class should extend WebappClassLoader, otherwise, a different 
      * loader implementation must be used.
+     * 
+     * 将被创建的 loader class name,  该类需要 继承 webappclassloader. 
      */
     private String loaderClass =
         "org.apache.catalina.loader.WebappClassLoader";
@@ -169,12 +175,14 @@ public class WebappLoader
 
     /**
      * The reloadable flag for this Loader.
+     * 重新加载标志.
      */
     private boolean reloadable = false;
 
 
     /**
      * The set of repositories associated with this class loader.
+     * 关联的仓库集合
      */
     private String repositories[] = new String[0];
 
@@ -206,6 +214,7 @@ public class WebappLoader
 
     /**
      * Repositories that are set in the loader, for JMX.
+     * 仓库集合
      */
     private ArrayList loaderRepositories = null;
 
@@ -235,7 +244,8 @@ public class WebappLoader
 
     /**
      * Set the Container with which this Logger has been associated.
-     *
+     * 
+     * 设置 container 并且如果是一个context.  不为空. 那么做一下属性改变的事件.
      * @param container The associated Container
      */
     public void setContainer(Container container) {
@@ -245,6 +255,7 @@ public class WebappLoader
             ((Context) this.container).removePropertyChangeListener(this);
 
         // Process this property change
+        // 处理 属性 改变事件.
         Container oldContainer = this.container;
         this.container = container;
         support.firePropertyChange("container", oldContainer, this.container);
@@ -299,6 +310,7 @@ public class WebappLoader
 
     /**
      * Return the ClassLoader class name.
+     * 返回 classLoader 的类名
      */
     public String getLoaderClass() {
 
@@ -309,7 +321,7 @@ public class WebappLoader
 
     /**
      * Set the ClassLoader class name.
-     *
+     * 设置 classLoader 类名,  就是通过这个地方 设置 创建的默认的classLoader.
      * @param loaderClass The new ClassLoader class name
      */
     public void setLoaderClass(String loaderClass) {
@@ -363,7 +375,9 @@ public class WebappLoader
 
     /**
      * Add a new repository to the set of repositories for this class loader.
-     *
+     * 
+     * 添加仓库到集合
+     * 
      * @param repository Repository to be added
      */
     public void addRepository(String repository) {
@@ -383,6 +397,7 @@ public class WebappLoader
 
         if (started && (classLoader != null)) {
             classLoader.addRepository(repository);
+            // 把仓库放入 列表.
             if( loaderRepositories != null ) loaderRepositories.add(repository);
             setClassPath();
         }
@@ -391,9 +406,11 @@ public class WebappLoader
 
 
     /**
-     * Execute a periodic task, such as reloading, etc. This method will be
+     * Execute a periodic(周期) task, such as reloading, etc. This method will be
      * invoked inside the classloading context of this container. Unexpected
      * throwables will be caught and logged.
+     * 
+     * 
      */
     public void backgroundProcess() {
         if (reloadable && modified()) {
@@ -420,6 +437,8 @@ public class WebappLoader
      * If none are defined, a zero-length array is returned.
      * For security reason, returns a clone of the Array (since 
      * String are immutable).
+     * 
+     * 返回一个 仓库集合,  如果没有定义, 返回一个空数组,  因为安全原因, 返回的是一个 克隆的数组.
      */
     public String[] findRepositories() {
 
@@ -472,6 +491,8 @@ public class WebappLoader
     /**
      * Has the internal repository associated with this Loader been modified,
      * such that the loaded classes should be reloaded?
+     * 
+     * 是否被修改,  检查的是 文件的时间戳,
      */
     public boolean modified() {
 
@@ -552,7 +573,9 @@ public class WebappLoader
         lifecycle.removeLifecycleListener(listener);
 
     }
-
+    /**
+     * 一般 tomcat的组件都会有个一是否初始化的标志.   
+     */
     private boolean initialized=false;
 
     public void init() {
@@ -598,12 +621,18 @@ public class WebappLoader
 
     /**
      * Start this component, initializing our associated class loader.
-     *
+     * 
+     * 启动组件,  初始化我们的关联loader 类.
+     * 
+     * 是在这个里面设置类的路径.等等.
+     * 
      * @exception LifecycleException if a lifecycle error occurs
      */
     public void start() throws LifecycleException {
         // Validate and update our current component state
+    	// 没有初始化的话,  就初始化, 
         if( ! initialized ) init();
+        // 如果已经启动了.   抛出异常.
         if (started)
             throw new LifecycleException
                 (sm.getString("webappLoader.alreadyStarted"));
@@ -611,7 +640,7 @@ public class WebappLoader
             log.debug(sm.getString("webappLoader.starting"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
-
+        // getResource ?? 是什么呢
         if (container.getResources() == null) {
             log.info("No resources for " + container);
             return;
@@ -763,6 +792,10 @@ public class WebappLoader
 
     /**
      * Create associated classLoader.
+     * 
+     * 创建一个关联的类加载器.
+     * 
+     * 根据classloader 类名.
      */
     private WebappClassLoader createClassLoader()
         throws Exception {
