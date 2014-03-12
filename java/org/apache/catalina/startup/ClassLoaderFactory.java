@@ -31,7 +31,13 @@ import org.apache.juli.logging.LogFactory;
 /**
  * <p>Utility class for building class loaders for Catalina.  The factory
  * method requires the following parameters in order to build a new class
- * loader (with suitable defaults in all cases):</p>
+ * loader (with suitable defaults in all cases):</p> 
+ * 
+ * 为Catalina加载class的工具类. 需要下列参数:
+ * 
+ * 1. 一个文件夹集合. 包含未解包的类文件资源.
+ * 2. 一个文件夹集合 包含 类  jar文件.
+ * 3. 父类加载器classloader实例
  * <ul>
  * <li>A set of directories containing unpacked classes (and resources)
  *     that should be included in the class loader's
@@ -63,7 +69,7 @@ public final class ClassLoaderFactory {
     /**
      * Create and return a new class loader, based on the configuration
      * defaults and the specified directory paths:
-     *
+     * 使用 配置的路径 获得一个新的加载器.
      * @param unpacked Array of pathnames to unpacked directories that should
      *  be added to the repositories of the class loader, or <code>null</code> 
      * for no unpacked directories to be considered
