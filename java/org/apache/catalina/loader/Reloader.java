@@ -23,7 +23,9 @@ package org.apache.catalina.loader;
  * Internal interface that <code>ClassLoader</code> implementations may
  * optionally implement to support the auto-reload functionality of
  * the classloader associated with the context.
- *
+ * 
+ *  内部接口,  实现支持关联的context自动加载功能.
+ * 
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */
@@ -34,7 +36,9 @@ public interface Reloader {
     /**
      * Add a new repository to the set of places this ClassLoader can look for
      * classes to be loaded.
-     *
+     * 
+     * 添加一个仓库到集合. 这样. classloader 可以找到并加载class
+     * 
      * @param repository Name of a source of classes to be loaded, such as a
      *  directory pathname, a JAR file pathname, or a ZIP file pathname
      *
@@ -48,6 +52,8 @@ public interface Reloader {
      * Return a String array of the current repositories for this class
      * loader.  If there are no repositories, a zero-length array is
      * returned.
+     * 
+     * 返回 仓库数组.  没有返回空的数组
      */
     public String[] findRepositories();
 
@@ -55,6 +61,8 @@ public interface Reloader {
     /**
      * Have one or more classes or resources been modified so that a reload
      * is appropriate?
+     * 
+     * 是否有 资源 或者  class被修改.
      */
     public boolean modified();
 

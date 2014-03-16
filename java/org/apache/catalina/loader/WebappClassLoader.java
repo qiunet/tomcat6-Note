@@ -1,5 +1,5 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+   * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -67,11 +67,15 @@ import org.apache.tomcat.util.IntrospectionUtils;
 
 /**
  * Specialized web application class loader.
+ * 
+ * 指定一个web应用的类加载.
  * <p>
  * This class loader is a full reimplementation of the 
  * <code>URLClassLoader</code> from the JDK. It is desinged to be fully
  * compatible with a normal <code>URLClassLoader</code>, although its internal
  * behavior may be completely different.
+ * 
+ * 
  * <p>
  * <strong>IMPLEMENTATION NOTE</strong> - This class loader faithfully follows 
  * the delegation model recommended in the specification. The system class 
@@ -167,6 +171,8 @@ public class WebappClassLoader
     /**
      * Set of package names which are not allowed to be loaded from a webapp
      * class loader without delegating first.
+     * 
+     * 一个webapp不允许被加载的类.
      */
     protected static final String[] packageTriggers = {
     };
@@ -239,12 +245,15 @@ public class WebappClassLoader
     /**
      * The cache of ResourceEntry for classes and resources we have loaded,
      * keyed by resource name.
+     * 
+     * cache 我们已经加载的资源.  key是 资源name
      */
     protected HashMap resourceEntries = new HashMap();
 
 
     /**
      * The list of not found resources.
+     * 没有找到的资源.  也会缓存. 防止每次的查找. 提高命中(是jar包的资源内容)
      */
     protected HashMap notFoundResources = new HashMap();
 
@@ -290,6 +299,8 @@ public class WebappClassLoader
     /**
      * The list of JARs, in the order they should be searched
      * for locally loaded classes or resources.
+     * 
+     * jar list. 他们将被搜索. 并且加载.
      */
     protected JarFile[] jarFiles = new JarFile[0];
 
@@ -297,6 +308,8 @@ public class WebappClassLoader
     /**
      * The list of JARs, in the order they should be searched
      * for locally loaded classes or resources.
+     * 
+     * .... 
      */
     protected File[] jarRealFiles = new File[0];
 
@@ -1888,23 +1901,25 @@ public class WebappClassLoader
 
     /**
      * Find specified resource in local repositories.
+     * 
+     * 找到指定的资源
      *
      * @return the loaded resource, or null if the resource isn't found
      */
     protected ResourceEntry findResourceInternal(String name, String path) {
-
+    	// 如果没有启动该cloader.  return
         if (!started) {
             log.info(sm.getString("webappClassLoader.stopped", name));
             return null;
         }
-
+        // 对name进行判断
         if ((name == null) || (path == null))
             return null;
-
+        // 先从hash缓存查找
         ResourceEntry entry = (ResourceEntry) resourceEntries.get(name);
         if (entry != null)
             return entry;
-
+        
         int contentLength = -1;
         InputStream binaryStream = null;
 
@@ -1919,7 +1934,7 @@ public class WebappClassLoader
 
         for (i = 0; (entry == null) && (i < repositoriesLength); i++) {
             try {
-
+            	// 大概也找class
                 String fullPath = repositories[i] + path;
 
                 Object lookupResult = resources.lookup(fullPath);
@@ -1985,7 +2000,7 @@ public class WebappClassLoader
             } catch (NamingException e) {
             }
         }
-
+        /// 如果在 没有找到的资源里面. 就不进行下一步了.
         if ((entry == null) && (notFoundResources.containsKey(name)))
             return null;
 
@@ -2077,6 +2092,7 @@ public class WebappClassLoader
 
             if (entry == null) {
                 synchronized (notFoundResources) {
+                	// 如果未命中.  就存入 hash .防止下次的查找
                     notFoundResources.put(name, name);
                 }
                 return null;
@@ -2126,6 +2142,7 @@ public class WebappClassLoader
         }
 
         // Add the entry in the local resource repository
+        // 添加一个实体 到本地资源仓库
         synchronized (resourceEntries) {
             // Ensures that all the threads which may be in a race to load
             // a particular class all end up with the same ResourceEntry
@@ -2170,6 +2187,11 @@ public class WebappClassLoader
      * loaded and cached by this class loader, and return an input stream
      * to the resource data.  If this resource has not been cached, return
      * <code>null</code>.
+     * 
+     * 
+     * 找到一个已经被加载到 hash缓存的资源.  然后以stream的方式返回.
+     * 
+     * 如果没有被cache .  返回null
      *
      * @param name Name of the resource to return
      */
@@ -2320,6 +2342,7 @@ public class WebappClassLoader
 
     /**
      * Get URL.
+     * file 转 url
      */
     protected URL getURL(File file, boolean encoded)
         throws MalformedURLException {
