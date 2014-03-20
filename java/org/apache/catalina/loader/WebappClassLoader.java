@@ -68,7 +68,7 @@ import org.apache.tomcat.util.IntrospectionUtils;
 /**
  * Specialized web application class loader.
  * 
- * 指定一个web应用的类加载.
+ * 指定一个web应用的类加载. 将被设置到 webappLoader
  * <p>
  * This class loader is a full reimplementation of the 
  * <code>URLClassLoader</code> from the JDK. It is desinged to be fully
@@ -162,6 +162,8 @@ public class WebappClassLoader
      * components that have been integrated into the JDK for later versions,
      * but where the corresponding JAR files are required to run on
      * earlier versions.
+     * 
+     * ser
      */
     protected static final String[] triggers = {
         "javax.servlet.Servlet"                     // Servlet API
@@ -172,7 +174,7 @@ public class WebappClassLoader
      * Set of package names which are not allowed to be loaded from a webapp
      * class loader without delegating first.
      * 
-     * 一个webapp不允许被加载的类.
+     * 不允许该classLoader加载的类. 一般是 java.* javax.* 等
      */
     protected static final String[] packageTriggers = {
     };
@@ -238,6 +240,8 @@ public class WebappClassLoader
     /**
      * Associated directory context giving access to the resources in this
      * webapp.
+     * 
+     * 关联的DirContext
      */
     protected DirContext resources = null;
 
