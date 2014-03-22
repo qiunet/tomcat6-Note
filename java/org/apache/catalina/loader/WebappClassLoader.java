@@ -282,12 +282,16 @@ public class WebappClassLoader
     /**
      * The list of local repositories, in the order they should be searched
      * for locally loaded classes or resources.
+     * 
+     * 本地 仓库列表. 相当于 linux的path.优先从这里查找类. (packageTriggers 等除外)
      */
     protected String[] repositories = new String[0];
 
 
      /**
       * Repositories URLs, used to cache the result of getURLs.
+      * 
+      * getURLs 结果的缓存
       */
      protected URL[] repositoryURLs = null;
 
@@ -296,6 +300,8 @@ public class WebappClassLoader
      * Repositories translated as path in the work directory (for Jasper
      * originally), but which is used to generate fake URLs should getURLs be
      * called.
+     * 
+     * 仓库资源  转成的file数组 . 
      */
     protected File[] files = new File[0];
 
@@ -320,6 +326,8 @@ public class WebappClassLoader
 
     /**
      * The path which will be monitored for added Jar files.
+     * 
+     * jar 地址
      */
     protected String jarPath = null;
 
@@ -327,6 +335,8 @@ public class WebappClassLoader
     /**
      * The list of JARs, in the order they should be searched
      * for locally loaded classes or resources.
+     * 
+     * jar name arrays
      */
     protected String[] jarNames = new String[0];
 
@@ -334,6 +344,8 @@ public class WebappClassLoader
     /**
      * The list of JARs last modified dates, in the order they should be
      * searched for locally loaded classes or resources.
+     * 
+     * 每个jar的最后修改时间
      */
     protected long[] lastModifiedDates = new long[0];
 
@@ -341,6 +353,8 @@ public class WebappClassLoader
     /**
      * The list of resources which should be checked when checking for
      * modifications.
+     * 
+     * 被检查是否修改的地址 数组
      */
     protected String[] paths = new String[0];
 
@@ -348,6 +362,7 @@ public class WebappClassLoader
     /**
      * A list of read File and Jndi Permission's required if this loader
      * is for a web application context.
+     * 
      */
     protected ArrayList permissionList = new ArrayList();
 
@@ -1938,7 +1953,7 @@ public class WebappClassLoader
 
         for (i = 0; (entry == null) && (i < repositoriesLength); i++) {
             try {
-            	// 大概也找class
+            	// 仓库路径 + 路径
                 String fullPath = repositories[i] + path;
 
                 Object lookupResult = resources.lookup(fullPath);
@@ -1948,6 +1963,8 @@ public class WebappClassLoader
 
                 // Note : Not getting an exception here means the resource was
                 // found
+                
+                //  对权限安全的验证.  如果有安全管理. 对该路径进行特权设置.
                  if (securityManager != null) {
                     PrivilegedAction dp =
                         new PrivilegedFindResource(files[i], path);

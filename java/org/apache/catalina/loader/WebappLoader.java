@@ -816,7 +816,7 @@ public class WebappLoader
     /**
      * Create associated classLoader.
      * 
-     * 创建一个关联的类加载器.
+     * 创建一个关联的类加载器.WebappClassLoader 
      * 
      * 根据classloader 类名.
      */

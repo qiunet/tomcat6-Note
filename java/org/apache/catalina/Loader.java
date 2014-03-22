@@ -28,6 +28,8 @@ import java.beans.PropertyChangeListener;
  * with the Loader) that are designed to be reloaded upon request, as well as
  * a mechanism to detect whether changes have occurred in the underlying
  * repository.
+ * 
+ * 一个classLoader的实现.  可以为container 在已经关联仓库中加载类文件. 可以在部署文件改变后. 重新加载.  
  * <p>
  * In order for a <code>Loader</code> implementation to successfully operate
  * with a <code>Context</code> implementation that implements reloading, it

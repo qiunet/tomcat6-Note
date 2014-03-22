@@ -193,18 +193,21 @@ public abstract class ContainerBase
 
     /**
      * The Loader implementation with which this Container is associated.
+     * 关联的loader .WebappLoader . 里面封装管理了一个webappclassLoader. 
      */
     protected Loader loader = null;
 
 
     /**
      * The Logger implementation with which this Container is associated.
+     * 
      */
     protected Log logger = null;
 
 
     /**
      * Associated logger name.
+     * 关联的日志名成
      */
     protected String logName = null;
     
@@ -223,24 +226,28 @@ public abstract class ContainerBase
     
     /**
      * The human-readable name of this Container.
+     * 留给人识别的名称
      */
     protected String name = null;
 
 
     /**
      * The parent Container to which this Container is a child.
+     * 父类组件
      */
     protected Container parent = null;
 
 
     /**
      * The parent class loader to be configured when we install a Loader.
+     * 父类的加载器.
      */
     protected ClassLoader parentClassLoader = null;
 
 
     /**
      * The Pipeline object with which this Container is associated.
+     * 管道
      */
     protected Pipeline pipeline = new StandardPipeline(this);
 
@@ -253,6 +260,7 @@ public abstract class ContainerBase
 
     /**
      * The resources DirContext object with which this Container is associated.
+     * 资源文件夹上下文 类对象
      */
     protected DirContext resources = null;
 
