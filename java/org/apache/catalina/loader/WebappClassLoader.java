@@ -163,11 +163,7 @@ public class WebappClassLoader
      * but where the corresponding JAR files are required to run on
      * earlier versions.
      * 
-<<<<<<< HEAD
      * 考虑到安全性.  webappLoader 不允许载入的一个类列表
-=======
-     * ser
->>>>>>> 66915ba5c0254c3159a9e60e6ccfe84a652f9194
      */
     protected static final String[] triggers = {
         "javax.servlet.Servlet"                     // Servlet API
