@@ -106,7 +106,7 @@ public final class Bootstrap {
      * */
     private void initClassLoaders() {
         try {
-            commonLoader = createClassLoader("common", null);
+            commonLoader = createClassLoader("common", null);  // 父加载器
             if( commonLoader == null ) {
                 // no config file, default to this loader - we might be in a 'single' env.
             	// 如果不能从配置文件得到 ,默认为本类的加载器
@@ -129,15 +129,25 @@ public final class Bootstrap {
      */
     private ClassLoader createClassLoader(String name, ClassLoader parent)
         throws Exception {
-
+    	
+    	/**
+    	 *主要是取这些信息 并解析 
+    	 * common.loader=${catalina.home}/lib,${catalina.home}/lib/*.jar
+		 * server.loader=
+		 * shared.loader=
+    	 */
+    	
+    	// 从文件得到 name+Loader的对应值
+    	//读取配置属性，相关的配置属性在catalina.properties文件中
         String value = CatalinaProperties.getProperty(name + ".loader");
+      //如果没有对应的配置，将不会创建新的类加载器，而是返回传入的父类加载器
         if ((value == null) || (value.equals("")))
             return parent;
 
         ArrayList repositoryLocations = new ArrayList();
         ArrayList repositoryTypes = new ArrayList();
         int i;
- 
+      //解析得到的配置文件，确定本ClassLoader要加载那些目录下的资源和JAR包等
         StringTokenizer tokenizer = new StringTokenizer(value, ",");
         while (tokenizer.hasMoreElements()) {
             String repository = tokenizer.nextToken();

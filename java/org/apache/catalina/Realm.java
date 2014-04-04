@@ -33,6 +33,8 @@ import org.apache.catalina.deploy.SecurityConstraint;
  * level, but will typically only be attached to a Context, or higher level,
  * Container.
  *
+ * 网上搜了下. 好像是对 权限的 校验.  待修改.
+ *
  * @author Craig R. McClanahan
  * @version $Revision: 467222 $ $Date: 2006-10-24 11:17:11 +0800 (Tue, 24 Oct 2006) $
  */

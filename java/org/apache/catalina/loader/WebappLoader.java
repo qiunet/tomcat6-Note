@@ -65,11 +65,17 @@ import org.apache.tomcat.util.modeler.Registry;
 
 
 /**
+ * 
+ * 请注意. 这个不是真是的加载器.只是加载器管理组件.  加载器必须最终继承自 ClassLoader
+ * 
  * Classloader implementation which is specialized for handling web
  * applications in the most efficient way, while being Catalina aware (all
  * accesses to resources are made through the DirContext interface).
  * This class loader supports detection of modified
  * Java classes, which can be used to implement auto-reload support.
+ * 
+ * 
+ * 更有效处理web应用的指定类加载器实现. 支持监视java class是否更新. 以实现自动重新加载
  * <p>
  * This class loader is configured by adding the pathnames of directories,
  * JAR files, and ZIP files with the <code>addRepository()</code> method,
@@ -77,6 +83,10 @@ import org.apache.tomcat.util.modeler.Registry;
  * these repositories will be consulted first to locate the class.  If it
  * is not present, the system class loader will be used instead.
  *
+ * classLoader 会在调用start() 之前.  完成对仓库的路径配置. 包含jar  zip .调用的是addRepository () 方法.
+ * 当一个新类需要加载时候.  仓库先从本地查找. 如果不存在. 交由系统类加载器.
+ * 当然.本身有一些类 是必须交由 系统加载器加载的. 比如 java.*  javax.* 等. 还有servlet的类. 也是. 需要交给tomcat loader.
+ * 
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @version $Revision: 697048 $ $Date: 2008-09-19 18:59:38 +0800 (Fri, 19 Sep 2008) $
@@ -91,6 +101,7 @@ public class WebappLoader
     /**
      * Construct a new WebappLoader with no defined parent class loader
      * (so that the actual parent will be the system class loader).
+     * 构造一个没有定义父类加载器的 WebappLoader .实际真实父类是 系统加载器
      */
     public WebappLoader() {
 
@@ -116,12 +127,15 @@ public class WebappLoader
 
     /**
      * First load of the class.
+     * 是否已经start. start时候加载后.置为false
      */
     private static boolean first = true;
 
 
     /**
      * The class loader being managed by this Loader component.
+     * 
+     * 被管理的classLoader
      */
     private WebappClassLoader classLoader = null;
 
@@ -208,6 +222,8 @@ public class WebappLoader
 
     /**
      * Classpath set in the loader.
+     * 
+     * classpath
      */
     private String classpath = null;
 
@@ -224,6 +240,8 @@ public class WebappLoader
 
     /**
      * Return the Java class loader to be used by this Container.
+     * 
+     * 返回classLoader (WebappClassLoader)
      */
     public ClassLoader getClassLoader() {
 
@@ -234,6 +252,7 @@ public class WebappLoader
 
     /**
      * Return the Container with which this Logger has been associated.
+     * 返回关联的 容器
      */
     public Container getContainer() {
 
@@ -271,7 +290,7 @@ public class WebappLoader
 
     /**
      * Return the "follow standard delegation model" flag used to configure
-     * our ClassLoader.
+     * our ClassLoader. 
      */
     public boolean getDelegate() {
 
@@ -283,7 +302,7 @@ public class WebappLoader
     /**
      * Set the "follow standard delegation model" flag used to configure
      * our ClassLoader.
-     *
+     * 设置委托模式 (不懂)
      * @param delegate The new flag
      */
     public void setDelegate(boolean delegate) {
@@ -333,6 +352,8 @@ public class WebappLoader
 
     /**
      * Return the reloadable flag for this Loader.
+     * 
+     * 是否可以 重新加载
      */
     public boolean getReloadable() {
 
@@ -389,6 +410,8 @@ public class WebappLoader
             if (repository.equals(repositories[i]))
                 return;
         }
+        
+        /* 这个地方使用的是把数组长度加一. 然后重新赋值给 repositories. 据说性能高一些*/
         String results[] = new String[repositories.length + 1];
         for (int i = 0; i < repositories.length; i++)
             results[i] = repositories[i];
@@ -793,7 +816,7 @@ public class WebappLoader
     /**
      * Create associated classLoader.
      * 
-     * 创建一个关联的类加载器.
+     * 创建一个关联的类加载器.WebappClassLoader 
      * 
      * 根据classloader 类名.
      */
