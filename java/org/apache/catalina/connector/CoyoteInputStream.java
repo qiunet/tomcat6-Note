@@ -29,7 +29,7 @@ import org.apache.catalina.security.SecurityUtil;
 
 /**
  * This class handles reading bytes.
- * 
+ * 该类处理 读取bytes
  * @author Remy Maucherat
  * @author Jean-Francois Arcand
  */
@@ -44,6 +44,7 @@ public class CoyoteInputStream
 
 
     // ----------------------------------------------------------- Constructors
+    // 构造
 
 
     protected CoyoteInputStream(InputBuffer ib) {
@@ -56,6 +57,8 @@ public class CoyoteInputStream
 
     /**
      * Clear facade.
+     * 
+     * 清理
      */
     void clear() {
         ib = null;

@@ -481,6 +481,7 @@ public class Request
 
     /**
      * Associated Catalina connector.
+     * 关联的connector
      */
     protected Connector connector;
 
@@ -503,6 +504,7 @@ public class Request
 
     /**
      * Associated context.
+     * 关联的context
      */
     protected Context context = null;
 
@@ -575,6 +577,7 @@ public class Request
 
     /**
      * Descriptive information about this Request implementation.
+     * 描述
      */
     protected static final String info =
         "org.apache.coyote.catalina.CoyoteRequest/1.0";
@@ -583,6 +586,8 @@ public class Request
      * Return descriptive information about this Request implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
+     * 
+     * 描述
      */
     public String getInfo() {
         return (info);
@@ -604,12 +609,15 @@ public class Request
 
     /**
      * The facade associated with this request.
+     * 关联的request
      */
     protected RequestFacade facade = null;
 
     /**
      * Return the <code>ServletRequest</code> for which this object
      * is the facade.  This method must be implemented by a subclass.
+     * 
+     * 返回ServletRequest外观类.   
      */
     public HttpServletRequest getRequest() {
         if (facade == null) {
@@ -633,7 +641,7 @@ public class Request
 
     /**
      * Set the Response with which this Request is associated.
-     *
+     *设置关联的response对象
      * @param response The new associated response
      */
     public void setResponse(org.apache.catalina.connector.Response response) {
@@ -642,6 +650,7 @@ public class Request
 
     /**
      * Return the input stream associated with this Request.
+     * 返回关联的 InputStream
      */
     public InputStream getStream() {
         if (inputStream == null) {
@@ -712,6 +721,7 @@ public class Request
     /**
      * Create and return a ServletInputStream to read the content
      * associated with this Request.
+     * 创建一个 ServletInputStream 关联该request
      *
      * @exception IOException if an input/output error occurs
      */
@@ -780,7 +790,7 @@ public class Request
 
     /**
      * Set the content length associated with this Request.
-     *
+     *设置关联的内容长度
      * @param length The new content length
      */
     public void setContentLength(int length) {
@@ -792,7 +802,7 @@ public class Request
      * Set the content type (and optionally the character encoding)
      * associated with this Request.  For example,
      * <code>text/html; charset=ISO-8859-4</code>.
-     *
+     * 设置内容类型. 
      * @param type The new content type
      */
     public void setContentType(String type) {
@@ -802,7 +812,7 @@ public class Request
 
     /**
      * Set the protocol name and version associated with this Request.
-     *
+     * 设置 协议名称 或者协议版本
      * @param protocol Protocol name and version
      */
     public void setProtocol(String protocol) {
@@ -977,6 +987,8 @@ public class Request
      * Return the servlet input stream for this Request.  The default
      * implementation returns a servlet input stream created by
      * <code>createInputStream()</code>.
+     *
+     * 返回该request的servlet input stream. 默认是返回createInputStream() 方法创建的 
      *
      * @exception IllegalStateException if <code>getReader()</code> has
      *  already been called for this request
