@@ -26,6 +26,8 @@ import org.xml.sax.Attributes;
 /**
  * Concrete implementations of this class implement actions to be taken when
  * a corresponding nested pattern of XML elements has been matched.
+ * 
+ * 
  */
 
 public abstract class Rule {
@@ -59,6 +61,7 @@ public abstract class Rule {
 
     /**
      * The Digester with which this Rule is associated.
+     * 与之相关联的 Digester  , 目前通过构造方法设置的已经过时, 是通过setDigester(Digester digester)
      */
     protected Digester digester = null;
 
@@ -236,7 +239,7 @@ public abstract class Rule {
      * called, to allow Rules to remove temporary data.
      */
     public void finish() throws Exception {
-
+    		// 我看明白这个英语了.
         ;	// The default implementation does nothing
 
     }

@@ -27,6 +27,8 @@ import org.xml.sax.Attributes;
  * Rule implementation that creates a new object and pushes it
  * onto the object stack.  When the element is complete, the
  * object will be popped
+ * 
+ * 实现 rule 创建一个对象. 压入对象堆栈. 
  */
 
 public class ObjectCreateRule extends Rule {
@@ -168,12 +170,15 @@ public class ObjectCreateRule extends Rule {
 
     /**
      * The attribute containing an override class name if it is present.
+     * 如果该属性不为空. 覆盖className
      */
     protected String attributeName = null;
 
 
     /**
      * The Java class name of the object to be created.
+     * 要创建的 java class 
+     * 
      */
     protected String className = null;
 
@@ -189,6 +194,7 @@ public class ObjectCreateRule extends Rule {
     public void begin(Attributes attributes) throws Exception {
 
         // Identify the name of the class to instantiate
+    	// 识别 class 的 名称, 默认使用 classname, 如果 attributeName 不为 null, 并且有值, 使用attributeName 指定的 className
         String realClassName = className;
         if (attributeName != null) {
             String value = attributes.getValue(attributeName);
@@ -204,6 +210,7 @@ public class ObjectCreateRule extends Rule {
         // Instantiate the new object and push it on the context stack
         Class clazz = digester.getClassLoader().loadClass(realClassName);
         Object instance = clazz.newInstance();
+       // 压入  digester.ArrayStack
         digester.push(instance);
 
     }
@@ -211,6 +218,7 @@ public class ObjectCreateRule extends Rule {
 
     /**
      * Process the end of this element.
+     *
      */
     public void end() throws Exception {
 
@@ -225,6 +233,7 @@ public class ObjectCreateRule extends Rule {
 
     /**
      * Render a printable version of this Rule.
+     * 打印
      */
     public String toString() {
 

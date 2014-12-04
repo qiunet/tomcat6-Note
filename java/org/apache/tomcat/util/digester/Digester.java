@@ -782,6 +782,8 @@ public class Digester extends DefaultHandler {
      * Return the <code>Rules</code> implementation object containing our
      * rules collection and associated matching policy.  If none has been
      * established, a default implementation will be created and returned.
+     * 
+     *  返回关联的 rules 对象.
      */
     public Rules getRules() {
 
@@ -1742,11 +1744,12 @@ public class Digester extends DefaultHandler {
      * <p>Register a new Rule matching the specified pattern.
      * This method sets the <code>Digester</code> property on the rule.</p>
      *
+     * 使用指定的 patten 注册一个新的 rule 
      * @param pattern Element matching pattern
      * @param rule Rule to be registered
      */
     public void addRule(String pattern, Rule rule) {
-
+    	// 在这个地方设置 Digester
         rule.setDigester(this);
         getRules().add(pattern, rule);
 
@@ -2170,7 +2173,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Add an "object create" rule for the specified parameters.
-     *
+     *使用指定的参数 添加一个 objectcreate rule
      * @param pattern Element matching pattern
      * @param className Java class name to be created
      * @see ObjectCreateRule
@@ -2185,7 +2188,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Add an "object create" rule for the specified parameters.
-     *
+     *使用指定的参数 添加一个 objectcreate rule
      * @param pattern Element matching pattern
      * @param clazz Java class to be created
      * @see ObjectCreateRule
@@ -2200,7 +2203,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Add an "object create" rule for the specified parameters.
-     *
+     *  使用指定的参数 添加一个 objectcreate rule
      * @param pattern Element matching pattern
      * @param className Default Java class name to be created
      * @param attributeName Attribute name that optionally overrides
@@ -2218,7 +2221,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Add an "object create" rule for the specified parameters.
-     *
+     *使用指定的参数 添加一个 objectcreate rule
      * @param pattern Element matching pattern
      * @param attributeName Attribute name that optionally overrides
      * @param clazz Default Java class to be created

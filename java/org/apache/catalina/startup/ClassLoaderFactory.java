@@ -268,6 +268,8 @@ public final class ClassLoaderFactory {
             for (int i = 0; i < array.length; i++) {
                 log.debug("  location " + i + " is " + array[i]);
             }
+        
+        // 使用这些 url 数组构建一个 classloader
         StandardClassLoader classLoader = null;
         if (parent == null)
             classLoader = new StandardClassLoader(array);

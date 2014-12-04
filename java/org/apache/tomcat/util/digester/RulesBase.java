@@ -30,7 +30,7 @@ import java.util.List;
  * <p>Default implementation of the <code>Rules</code> interface that supports
  * the standard rule matching behavior.  This class can also be used as a
  * base class for specialized <code>Rules</code> implementations.</p>
- *
+ *	rules 的默认实现, 
  * <p>The matching policies implemented by this class support two different
  * types of pattern matching rules:</p>
  * <ul>
@@ -53,6 +53,9 @@ public class RulesBase implements Rules {
      * The set of registered Rule instances, keyed by the matching pattern.
      * Each value is a List containing the Rules for that pattern, in the
      * order that they were orginally registered.
+     * 
+     * 注册的 rule 实现, key 是pattern ,就是 addObjectCreate 的第一个参数
+     * 每个 value 是一个 list, list 顺序为 注册时间
      */
     protected HashMap cache = new HashMap();
 
@@ -74,6 +77,7 @@ public class RulesBase implements Rules {
     /**
      * The set of registered Rule instances, in the order that they were
      * originally registered.
+     * 按照注册顺序的 rule list
      */
     protected ArrayList rules = new ArrayList();
 
@@ -94,6 +98,8 @@ public class RulesBase implements Rules {
 
     /**
      * Set the Digester instance with which this Rules instance is associated.
+     *
+     *设置Digester 并且循环设置到每个 rule
      *
      * @param digester The newly associated Digester instance
      */
@@ -140,7 +146,7 @@ public class RulesBase implements Rules {
 
     /**
      * Register a new Rule instance matching the specified pattern.
-     *
+     * 注册一个新的  rule
      * @param pattern Nesting pattern to be matched for this Rule
      * @param rule Rule instance to be registered
      */
@@ -171,6 +177,7 @@ public class RulesBase implements Rules {
 
     /**
      * Clear all existing Rule instance registrations.
+     * 清除所有已有的 rule
      */
     public void clear() {
 
@@ -245,6 +252,8 @@ public class RulesBase implements Rules {
      * instance has been registered, they <strong>must</strong> be returned
      * in the order originally registered through the <code>add()</code>
      * method.
+     * 
+     * 返回所有 rule 实例
      */
     public List rules() {
 

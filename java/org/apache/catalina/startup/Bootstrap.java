@@ -148,6 +148,7 @@ public final class Bootstrap {
         ArrayList repositoryTypes = new ArrayList();
         int i;
       //解析得到的配置文件，确定本ClassLoader要加载那些目录下的资源和JAR包等
+        //${catalina.home}/lib,${catalina.home}/lib/*.jar  解析的这两个值
         StringTokenizer tokenizer = new StringTokenizer(value, ",");
         while (tokenizer.hasMoreElements()) {
             String repository = tokenizer.nextToken();
@@ -164,6 +165,7 @@ public final class Bootstrap {
                     repository = getCatalinaHome() 
                         + repository.substring(CATALINA_HOME_TOKEN.length());
                 }
+                // 找到${catalina.home} 则替换真实地址, 没有找到则追加在后面
             }
             while ((i=repository.indexOf(CATALINA_BASE_TOKEN))>=0) {
                 replace=true;
@@ -174,6 +176,7 @@ public final class Bootstrap {
                     repository = getCatalinaBase() 
                         + repository.substring(CATALINA_BASE_TOKEN.length());
                 }
+                // 找到${catalina. base} 则替换真实地址, 没有找到则追加在后面
             }
             if (replace && log.isDebugEnabled())
                 log.debug("Expanded " + before + " to " + replace);

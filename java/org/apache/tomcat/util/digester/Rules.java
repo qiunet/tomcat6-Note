@@ -28,6 +28,8 @@ import java.util.List;
  * matching patterns) plus an implementation of a matching policy that selects
  * the rules that match a particular pattern of nested elements discovered
  * during parsing.
+ * 
+ * 一个 rule 的集合对象, 
  */
 
 public interface Rules {
@@ -74,6 +76,8 @@ public interface Rules {
 
     /**
      * Register a new Rule instance matching the specified pattern.
+     * 
+     *   使用指定的 patten(key) 注册一个新的 rule
      *
      * @param pattern Nesting pattern to be matched for this Rule
      * @param rule Rule instance to be registered
@@ -83,6 +87,8 @@ public interface Rules {
 
     /**
      * Clear all existing Rule instance registrations.
+     * 
+     *  清除已有的 rule
      */
     public void clear();
 
@@ -121,6 +127,8 @@ public interface Rules {
      * instance has been registered, they <strong>must</strong> be returned
      * in the order originally registered through the <code>add()</code>
      * method.
+     * 
+     * 返回所有已有的 rule
      */
     public List rules();
 
