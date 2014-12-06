@@ -311,7 +311,7 @@ public class Catalina extends Embedded {
         digester.addObjectCreate("Server",
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
-        // 为server 设置属性 由xml决定.
+        // 为server 设置属性 由xml决定. 如果属性名和 class 的名一样的话
         digester.addSetProperties("Server");
         
         

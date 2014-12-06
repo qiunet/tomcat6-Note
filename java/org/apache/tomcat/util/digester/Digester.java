@@ -2411,6 +2411,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Clear the current contents of the object stack.
+     * 清理当前对象. 包括堆栈
      * <p>
      * Calling this method <i>might</i> allow another document of the same type
      * to be correctly parsed. However this method was not intended for this 
@@ -2430,7 +2431,9 @@ public class Digester extends DefaultHandler {
         
     }
 
-    
+    /***
+     * 彻底清理. 恢复一个新的对象.
+     */
     public void reset() {
         root = null;
         setErrorHandler(null);
@@ -2477,6 +2480,7 @@ public class Digester extends DefaultHandler {
     /**
      * Pop the top object off of the stack, and return it.  If there are
      * no objects on the stack, return <code>null</code>.
+     * 弹出一个对象, 如果没有. 返回 null
      */
     public Object pop() {
 
@@ -2492,7 +2496,7 @@ public class Digester extends DefaultHandler {
 
     /**
      * Push a new object onto the top of the object stack.
-     *
+     * push 一个对象到 stack , push 的第一个对象为 root, 
      * @param object The new object
      */
     public void push(Object object) {
@@ -2507,7 +2511,7 @@ public class Digester extends DefaultHandler {
     /**
      * Pushes the given object onto the stack with the given name.
      * If no stack already exists with the given name then one will be created.
-     * 
+     *  把制定名称的对象推入 stack
      * @param stackName the name of the stack onto which the object should be pushed
      * @param value the Object to be pushed onto the named stack.
      *
@@ -2604,6 +2608,8 @@ public class Digester extends DefaultHandler {
      * When the Digester is being used as a SAXContentHandler, 
      * this method allows you to access the root object that has been
      * created after parsing.
+     *  
+     *  返回 root 对象
      * 
      * @return the root object that has been created after parsing
      *  or null if the digester has not parsed any XML yet.
