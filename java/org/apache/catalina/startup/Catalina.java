@@ -739,7 +739,7 @@ public class Catalina extends Embedded {
     // XXX Should be moved to embedded !
     /**
      * Shutdown hook which will perform a clean shutdown of Catalina if needed.
-     * 如果是
+     * 如果是意外的推出, 会调用 stop 方法
      * 
      * catalina 的关闭钩子
      */
