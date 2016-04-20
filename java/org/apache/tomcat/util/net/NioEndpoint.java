@@ -521,6 +521,7 @@ public class NioEndpoint {
     public long getSelectorTimeout(){ return this.selectorTimeout; }
     /**
      * The socket poller.
+     * 负责轮询selector 信息的类的数组
      */
     protected Poller[] pollers = null;
     protected AtomicInteger pollerRotater = new AtomicInteger(0);
@@ -787,6 +788,7 @@ public class NioEndpoint {
 
     /**
      * Initialize the endpoint.
+     *  初始化 endpoint
      */
     public void init()
         throws Exception {

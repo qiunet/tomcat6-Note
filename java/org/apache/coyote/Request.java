@@ -33,6 +33,8 @@ import org.apache.tomcat.util.http.Cookies;
  * This is a low-level, efficient representation of a server request. Most 
  * fields are GC-free, expensive operations are delayed until the  user code 
  * needs the information.
+ * 
+ * 这是一个轻量 高效的 server request . 很多字段使用 gc 释放,  很多代码都延后到用户需要时候处理.
  *
  * Processing is delegated to modules, using a hook mechanism.
  * 
@@ -481,7 +483,7 @@ public final class Request {
 
     // -------------------- Recycling -------------------- 
 
-
+    /**重置*/
     public void recycle() {
         bytesRead=0;
 

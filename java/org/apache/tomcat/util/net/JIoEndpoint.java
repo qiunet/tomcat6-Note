@@ -564,7 +564,7 @@ public class JIoEndpoint {
             return;
         
         // Initialize thread count defaults for acceptor
-        
+        // 在这个地方.初始化了acceptorThreadCount数
         if (acceptorThreadCount == 0) {
             acceptorThreadCount = 1;
         }

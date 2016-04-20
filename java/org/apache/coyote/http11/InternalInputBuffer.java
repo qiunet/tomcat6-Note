@@ -345,6 +345,8 @@ public class InternalInputBuffer implements InputBuffer {
      * HTTP request header parsing. Do NOT attempt to read the request body 
      * using it.
      *
+     * 读取请求  功能会再 http 请求头解析时候被用到. 不要尝试 读取 body 时候使用.
+     * 
      * @throws IOException If an exception occurs during the underlying socket
      * read operations, or if the given buffer is not big enough to accomodate
      * the whole line.

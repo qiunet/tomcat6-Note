@@ -206,7 +206,7 @@ public class Http11NioProtocol implements ProtocolHandler, MBeanRegistration
     }
 
     // -------------------- Properties--------------------
-    protected NioEndpoint ep=new NioEndpoint();
+    protected NioEndpoint ep =new NioEndpoint();
     protected boolean secure = false;
 
     protected Hashtable attributes = new Hashtable();

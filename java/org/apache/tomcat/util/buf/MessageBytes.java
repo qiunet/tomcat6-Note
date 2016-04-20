@@ -102,6 +102,7 @@ public final class MessageBytes implements Cloneable, Serializable {
     
     /**
      * Resets the message bytes to an uninitialized (NULL) state.
+     * 重置该类, 主要是byteC.isNull()  charC.isNull()  hasStrValue; 这3
      */
     public void recycle() {
 	type=T_NULL;

@@ -361,7 +361,7 @@ public final class Bootstrap {
     /**
      * Stop the standlone server.
      * 
-     * 停止  ?  服务
+     * 停止服务 发送 shutdown 命令到监听端口
      */
     public void stopServer()
         throws Exception {
@@ -416,6 +416,7 @@ public final class Bootstrap {
     }
     /**
      * 得到Catalina 的await值
+     * 没有找到该方法 ?? 整个项目都没有.
      * @return
      * @throws Exception
      */
@@ -465,7 +466,11 @@ public final class Bootstrap {
                 return;
             }
         }
-
+        /****
+         * 实际应用中. 没有 stopd. 也就是 shutdown.sh后, 调用的 Catalina.stopServer(String args[])
+         * 
+         * 
+         */
         try {
             String command = "start";
             if (args.length > 0) {
@@ -480,6 +485,7 @@ public final class Bootstrap {
                 args[0] = "stop";
                 daemon.stop();
             } else if (command.equals("start")) {
+            	// 设置 Catalina 的 await 属性.这样,调用 start 方法时候.就会 wait 
                 daemon.setAwait(true);
                 /** 
                  * 调用的catalina.java的load()
@@ -494,6 +500,7 @@ public final class Bootstrap {
                  */
                 daemon.start();
             } else if (command.equals("stop")) {
+            	// 停止服务. 调用的时 demon.stopService(String [] args)
                 daemon.stopServer(args);
             } else {
                 log.warn("Bootstrap: command \"" + command + "\" does not exist.");

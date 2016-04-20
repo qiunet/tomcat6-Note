@@ -241,7 +241,7 @@ public class Catalina extends Embedded {
             usage();
             return (false);
         }
-
+        // isConfig 会在检查到-config后, 置为 true, configFile 会被指定.
         for (int i = 0; i < args.length; i++) {
             if (isConfig) {
                 configFile = args[i];
@@ -329,7 +329,7 @@ public class Catalina extends Embedded {
                             "org.apache.catalina.deploy.NamingResources");
 
         digester.addObjectCreate("Server/Listener",
-                                 null, // MUST be specified in the element
+                                 null, 
                                  "className");
         digester.addSetProperties("Server/Listener");
         digester.addSetNext("Server/Listener",

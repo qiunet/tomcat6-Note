@@ -33,6 +33,7 @@ import org.apache.tomcat.util.MutableInteger;
 /**
  *
  * Thread safe non blocking selector pool
+ * 线程安全不阻塞的 selector 池
  * @author Filip Hanik
  * @version 1.0
  * @since 6.0
@@ -60,6 +61,7 @@ public class NioSelectorPool {
     protected boolean enabled = true;
     protected AtomicInteger active = new AtomicInteger(0);
     protected AtomicInteger spare = new AtomicInteger(0);
+    // 使用存储selector 的链表
     protected ConcurrentLinkedQueue<Selector> selectors = new ConcurrentLinkedQueue<Selector>();
 
     protected Selector getSharedSelector() throws IOException {
